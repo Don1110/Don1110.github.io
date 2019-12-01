@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="Don">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Don">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>05-07 数组和链表 · Don&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Thrones</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">05-07 数组和链表</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Thrones</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            05-07 数组和链表
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据结构与算法">数据结构与算法</a>
+    
+</div>
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/11/23</span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>数组和链表<br><a id="more"></a> </p>
+<h2 id="数组">数组</h2>
+<p>数组是一种线性表数据结构。它用一种连续的内存空间，来存储一组具有相同类型的数据。</p>
+<h3 id="数组的关键词">数组的关键词</h3>
+<ol>
+<li>线性表<ul>
+<li>除了数组，还有链表、队列、栈</li>
+<li>与之相对的叫非线性表，如二叉树、堆、图</li>
+</ul>
+</li>
+<li>连续的内存空间和相同类型的数据<ul>
+<li>随机访问</li>
+<li>插入删除需要做大量的数据搬移</li>
+</ul>
+</li>
+<li>警惕数组访问越界问题</li>
+<li>容器能否完全替代数组<ul>
+<li>如 Java 里的 ArrayList 。其优势：①.将很多数组操作的细节封装起来 ②.支持动态扩容</li>
+<li>使用经验<ol>
+<li>Java ArrayList无法存储基本类型，比如<code>int</code>、<code>long</code>，需要封装为Integer、Long类，而Autoboxing、Unboxing则有一定的性能消耗，所以如果特别关注性能，或者希望使用基本类型，就可以选用数组。</li>
+<li>如果数组大小事先已知，并且对数据的操作非常简单，用不到 ArrayList 提供的大部分方法，也可以直接使用数组。</li>
+<li>还有一个作者个人喜好，当要表示多维数组时，用数组往往会更加直观。比如 Object[][]array ;而用容器的话需要这样定义：ArrayList&lt; ArrayList &gt;array。</li>
+</ol>
+</li>
+<li>对于业务开发，直接使用容器就足够了，省时省力。毕竟损耗一点点性能，完全不会影响到系统的整体性能。</li>
+<li>但如果你是做一些非常底层的开发，比如开发网络框架，性能的优化就需要做到极致，这时候数组就会优于容器，成为首选。</li>
+</ul>
+</li>
+</ol>
+<h3 id="练习">练习</h3>
+<ol>
+<li>JVM的标记清除垃圾回收算法<ul>
+<li>这是最基础的垃圾回收算法，之所以说它是最基础的是因为它最容易实现，思想也是最简单的。标记-清除算法分为两个阶段：标记阶段和清除阶段。标记阶段的任务是标记出所有需要被回收的对象，清除阶段就是回收被标记的对象所占用的空间。</li>
+<li>标记-清除算法实现起来比较容易，但是有一个比较严重的问题就是容易产生内存碎片，碎片太多可能会导致后续过程中需要为大对象分配空间时无法找到足够的空间而提前触发新的一次垃圾收集动作（gc）。</li>
+</ul>
+</li>
+<li>二维数组的内存寻址公式<ul>
+<li>二维数组A[m][n]采用行序为主方式存储，每个元素占K个存储单位，并且第一个元素的存储地址是LOC(A[0][0]),则A[i][j]的地址是LOC(A[0][0])+(n<em>i+j)</em>k；</li>
+</ul>
+</li>
+</ol>
+<h2 id="链表">链表</h2>
+<h3 id="如何实现LRU缓存淘汰算法">如何实现LRU缓存淘汰算法</h3>
+<ul>
+<li>缓存是一种提高数据读取性能的技术，在硬件设计、软件开发中都有着非常广泛的应用，比如常见的CPU缓存、数据库缓存、浏览器缓存等等。</li>
+<li><p>缓存的大小有限，当缓存被用满时，哪些数据应该被保留？这就需要缓存淘汰策略来决定。常见的缓存淘汰策略有三种：</p>
+<ul>
+<li>先进先出策略FIFO (First In,First Out)</li>
+<li>最少使用策略LFU (Least Frequently Used)</li>
+<li>最近最少使用策略LRU (Least Recently Used)</li>
+</ul>
+</li>
+<li><p>思路</p>
+<ul>
+<li>维护一个有序单链表，越靠近链表尾部的结点是越早之前访问的。当有一个新的数据被访问时，我们从链表头开始顺序遍历链表。</li>
+</ul>
+<ol>
+<li>如果此数据之前已经被缓存在链表中了，我们得遍历得到这个数据对应的节点，并将其从原来的位置删除，然后再插入到链表的头部。</li>
+<li>如果此时缓存未满，则将此结点直接插入到链表的头部。</li>
+<li>如果此时缓存已满，则链表尾结点删除，将新的数据节点插入链表的头部。</li>
+</ol>
+<ul>
+<li>缓存访问的时间复杂度是O(n)</li>
+<li>如果要优化这个思路，可以引入散列表（Hash Table）来记录每个数据的位置，将缓存访问的时间复杂度降到O(1)</li>
+</ul>
+</li>
+</ul>
+<h3 id="链表结构">链表结构</h3>
+<p>三种常见的链表结构：单链表、双链表和循环列表。</p>
+<ol>
+<li>单链表<ul>
+<li>插入删除操作O(1)、随机访问O(n)</li>
+</ul>
+</li>
+<li>循环链表<ul>
+<li>一种特殊的单链表，跟单链表唯一区别就在尾结点：单链表的尾结点指针指向空地址，循环链表的尾结点指针指向链表的头结点。</li>
+<li>与单链表相比，循环链表优点在于从链尾到链头比较方便。</li>
+<li>当处理的数据具有环型结构特点时，就特别适合采用循环链表。比如著名的约瑟夫斯问题。</li>
+</ul>
+</li>
+<li>双向链表<ul>
+<li>单向链表只有一个方向，结点只有一个后继指针next指向后面的结点，而双向链表支持两个方向。</li>
+<li>每个节点不只有一个后继指针指向后面的节点，还有一个前驱指针指向前面的节点。</li>
+<li>从结构上看，双向链表可以支持O(1)时间复杂度的情况下找到前驱节点，正是这样的特点，也使双向链表在某些情况下的插入、删除等操作逗比单链表简单、高效。</li>
+<li>对于一个有序链表，双向链表的按值查询的效率也比单链表高一些。可以记录上次查找的位置p，每次查询时，根据要查找的值与p的大小关系，决定是否往前还是往后查找，所以平均只需要查找一半的数据。</li>
+<li>在实际的软件开发中，双向链表尽管比较费内存，但还是比单链表应用更广泛。</li>
+</ul>
+</li>
+<li>双向循环列表</li>
+</ol>
+<h3 id="空间换时间思想">空间换时间思想</h3>
+<ul>
+<li>缓存实际上就是利用了空间换时间的设计思想。<br>如果我们把数据存储在硬盘上，会比较节省内存，但每次查找数据都要访问一次硬盘，会比较慢。但如果我们通过缓存技术，事先将数据加载在内存中，虽然会比较耗费内存空间，但是每次数据查询的速度就大大提高了。</li>
+<li>对于执行较慢的程序，可以通过消耗更多的内存来进行优化。（空间换时间）</li>
+<li>而消耗过多内存的程序可以通过消耗更多时间来降低内存的消耗。（时间换空间）</li>
+</ul>
+<h3 id="课后思考">课后思考</h3>
+<ol>
+<li>判断一个字符串是回文字符串，如果字符串是单链表存储的，怎么判断？时间空间复杂度是多少？</li>
+</ol>
+<ul>
+<li>解答<ol>
+<li>使用快慢指针找到链表中点</li>
+<li>将后半部分 reversed </li>
+<li>一个指针在头部，一个指针在中点再逐个比较</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * public class ListNode {</div><div class="line"> *     int val;</div><div class="line"> *     ListNode next;</div><div class="line"> *     ListNode(int x) { val = x; }</div><div class="line"> * }</div><div class="line"> */</div><div class="line">class Solution {</div><div class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPalindrome</span>(ListNode head) {</div><div class="line">        <span class="comment">//只有一个点或空的情况</span></div><div class="line">        <span class="keyword">if</span>(head==<span class="keyword">null</span>||head.next==<span class="keyword">null</span>)</div><div class="line">        {</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        }</div><div class="line">        ListNode dummy=<span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        dummy.next=head;</div><div class="line">        ListNode fast=dummy;</div><div class="line">        ListNode slow=dummy;</div><div class="line">        <span class="comment">//慢指针走一步，快指针走两步，快指针到终点的时候，慢指针到正中间。</span></div><div class="line">        <span class="keyword">while</span>(fast!=<span class="keyword">null</span>&&fast.next!=<span class="keyword">null</span>)</div><div class="line">        {</div><div class="line">            slow=slow.next;</div><div class="line">            fast=fast.next.next;</div><div class="line">        }</div><div class="line">        <span class="comment">//断开链表，快指针在后半段的起点，慢指针在前半段的起点</span></div><div class="line">        fast=slow.next;</div><div class="line">        slow.next=<span class="keyword">null</span>;</div><div class="line">        slow=dummy.next;</div><div class="line">        <span class="comment">//反转后半段</span></div><div class="line">        ListNode pre=<span class="keyword">null</span>;</div><div class="line">        <span class="keyword">while</span>(fast!=<span class="keyword">null</span>){</div><div class="line">            ListNode nextTmp=fast.next;</div><div class="line">            fast.next=pre;</div><div class="line">            pre=fast;</div><div class="line">            fast=nextTmp;</div><div class="line">        }</div><div class="line">        <span class="comment">//挨个比较前后半段</span></div><div class="line">        <span class="keyword">while</span>(pre!=<span class="keyword">null</span>){</div><div class="line">            <span class="keyword">if</span>(slow.val!=pre.val){</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            }</div><div class="line">            slow=slow.next;</div><div class="line">            pre=pre.next;</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;        </div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="如何轻松写出正确的链表代码">如何轻松写出正确的链表代码</h3>
+<h4 id="技巧">技巧</h4>
+<ol>
+<li>理解指针或引用的含义<ul>
+<li>C语言中叫指针，Java、Python中叫引用。</li>
+<li>将某个变量赋值给指针，实际就是将这个变量的地址赋值给指针，或者反过来说，指针中存储了这个变量的内存地址，指向了这个变量，通过指针就能找到这个变量。</li>
+<li>如 p-&gt;next=q 意思是p结点中的next指针存储了q结点的内存地址。</li>
+<li>p-&gt;next=p-&gt;next-&gt;next 表示p结点的next指针存储了p结点的下下一个结点的内存地址。</li>
+</ul>
+</li>
+<li>警惕指针丢失和内存泄露<ul>
+<li>插入结点时，一定要注意操作的顺序。</li>
+<li>删除节点是，记得手动释放内存空间。（Java虚拟机自动管理内存的编程语言不需要考虑这么多）</li>
+</ul>
+</li>
+<li>利用哨兵简化实现难度<ul>
+<li>链表的插入删除操作，对于插入第一个结点和删除最后一个结点需要特殊处理，代码繁琐，因此可以引入哨兵结点。这种带哨兵的链表也叫带头链表。</li>
+<li>很多代码实现中都用到利用哨兵简化编程难度，比如插入排序、归并排序、动态规划等。</li>
+</ul>
+</li>
+<li>重点留意边界条件处理<ul>
+<li>如果链表为空时，代码能否正常工作？</li>
+<li>如果链表只包含一个结点时，代码能否正常工作？</li>
+<li>如果链表只包含两个结点时，代码能否正常工作？</li>
+<li>代码逻辑在处理头结点和尾结点的时候，是否能正常工作？</li>
+</ul>
+</li>
+<li>举例画图，辅助思考</li>
+<li>多写多练，没有捷径</li>
+</ol>
+<h4 id="精选五个链表操作">精选五个链表操作</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * public class ListNode {</div><div class="line"> *     int val;</div><div class="line"> *     ListNode next;</div><div class="line"> *     ListNode(int x) { val = x; }</div><div class="line"> * }</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+<ol>
+<li>单链表反转</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//迭代方法：每个节点指向前一个节点</span></div><div class="line">class Solution {</div><div class="line">    <span class="keyword">public</span> ListNode <span class="title">reverseList</span>(ListNode head) {</div><div class="line">        ListNode perv=<span class="keyword">null</span>;</div><div class="line">        ListNode curr=head;</div><div class="line">        </div><div class="line">        <span class="keyword">while</span>(curr!=<span class="keyword">null</span>)</div><div class="line">        {</div><div class="line">            ListNode nextTmp=curr.next;</div><div class="line">            curr.next=perv;</div><div class="line">            perv=curr;</div><div class="line">            curr=nextTmp;</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> perv;</div><div class="line">    }</div><div class="line">}</div><div class="line"><span class="comment">//我放弃递归方法</span></div></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>链表中环的检测</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span>(ListNode head) {</div><div class="line">        <span class="keyword">if</span>(head==<span class="keyword">null</span>||head.next==<span class="keyword">null</span>){</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        }</div><div class="line">        ListNode fast=head.next;</div><div class="line">        ListNode slow=head;</div><div class="line">        </div><div class="line">        <span class="keyword">while</span>(fast!=slow){</div><div class="line">            <span class="keyword">if</span>(fast==<span class="keyword">null</span>||fast.next==<span class="keyword">null</span>){</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            }</div><div class="line">            slow=slow.next;</div><div class="line">            fast=fast.next.next;</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>两个有序的链表合并</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Solution {</div><div class="line">    <span class="keyword">public</span> ListNode <span class="title">mergeTwoLists</span>(ListNode l1, ListNode l2) {</div><div class="line">        ListNode prehead=<span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        ListNode prev=prehead;</div><div class="line">        <span class="keyword">while</span>(l1!=<span class="keyword">null</span>&&l2!=<span class="keyword">null</span>){</div><div class="line">            <span class="keyword">if</span>(l1.val&lt;=l2.val){</div><div class="line">                 prev.next=l1;</div><div class="line">                 l1=l1.next;</div><div class="line">            }<span class="keyword">else</span>{</div><div class="line">                 prev.next=l2;</div><div class="line">                 l2=l2.next;</div><div class="line">            }</div><div class="line">            prev=prev.next;</div><div class="line">        }</div><div class="line">        <span class="keyword">if</span>(l1==<span class="keyword">null</span>)</div><div class="line">        {</div><div class="line">            prev.next=l2;</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            prev.next=l1;</div><div class="line">        }</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> prehead.next;</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>删除链表倒数第n个结点</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//方法一：两次遍历，先算出链表长度length，再删掉第length-n的节点</span></div><div class="line">class Solution {</div><div class="line">    <span class="keyword">public</span> ListNode <span class="title">removeNthFromEnd</span>(ListNode head, <span class="keyword">int</span> n) {</div><div class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        dummy.next=head;</div><div class="line">        <span class="keyword">int</span> length=<span class="number">0</span>;</div><div class="line">        ListNode first=head;</div><div class="line">        <span class="keyword">while</span>(first!=<span class="keyword">null</span>)</div><div class="line">        {</div><div class="line">            first=first.next;</div><div class="line">            ++length;</div><div class="line">        }</div><div class="line">        first=dummy;</div><div class="line">        length-=n;</div><div class="line">        <span class="keyword">while</span>(length&gt;<span class="number">0</span>)</div><div class="line">        {</div><div class="line">            length--;</div><div class="line">            first=first.next;</div><div class="line">        }</div><div class="line">        first.next=first.next.next;</div><div class="line">        <span class="keyword">return</span> dummy.next;</div><div class="line">    }</div><div class="line">}</div><div class="line"><span class="comment">//方法二：双指针</span></div><div class="line">class Solution {</div><div class="line">    <span class="keyword">public</span> ListNode <span class="title">removeNthFromEnd</span>(ListNode head, <span class="keyword">int</span> n) {</div><div class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        dummy.next=head;</div><div class="line">        ListNode first=dummy;</div><div class="line">        ListNode second=dummy;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</div><div class="line">        {</div><div class="line">            first=first.next;</div><div class="line">        }</div><div class="line">        <span class="keyword">while</span>(first.next!=<span class="keyword">null</span>)</div><div class="line">        {</div><div class="line">            first=first.next;</div><div class="line">            second=second.next;</div><div class="line">        }</div><div class="line">        second.next=second.next.next;</div><div class="line">        <span class="keyword">return</span> dummy.next;</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>求链表的中间结点</li>
+</ol>
+<ul>
+<li>上面思考题中有通过快慢指针求出中间结点。</li>
+</ul>
+<h3 id="课后思考-1">课后思考</h3>
+<ol>
+<li>还有什么场景可以利用哨兵大大地简化代码难度？</li>
+</ol>
+<h2 id="链表VS数组性能比拼">链表VS数组性能比拼</h2>
+<ol>
+<li><p>时间复杂度</p>
+<ul>
+<li>数组：插入删除O(n) 随机存储O(1)</li>
+<li>链表：插入删除O(1) 随机存储O(n)</li>
+<li>对比不能仅仅局限于时间复杂度，实际开发中不能仅仅利用复杂度分析就决定使用哪个数据结构来存储数据。</li>
+</ul>
+</li>
+<li><p>数组简单易用，实现上使用的是连续的内存空间，可以借助CPU的缓存机制，预读数组中的数据，所以访问效率更高。而链表在内存中并不是连续存储，所以对CPU缓存不友好，没办法预读。</p>
+</li>
+<li><p>数组的缺点是大小固定，一经声明就要占用整块连续内存空间。如果声明的数组过大，系统可能没有足够的连续内存空间分配给它，导致内存不足（out of memory）。如果声明的数组过小，则可能出现不够用的情况，这时只能再申请一个更大的内存空间，把原数组拷贝进去，非常费时。链表本身没有大小的限制，天然地支持动态扩容，我觉得这也是它与数组最大的区别。</p>
+</li>
+<li><p>如果你的代码对内存的使用非常苛刻，那数组就更适合你。因为链表中的每个节点都需要消耗额外的存储空间去存储一份指向下一个结点的指针，所以内存消耗会翻倍。而且，对链表进行频繁的插入、删除操作，还会导致频繁的内存申请和释放，容易造成内存碎片，如果是Java语言，就有可能会导致频繁的GC（Garbage Collection，垃圾回收）</p>
+</li>
+<li><p>所以，在实际的开发中，针对不同类型的项目要根据具体情况，权衡是选择数组还是链表。</p>
+</li>
+</ol>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://yoursite.com">Don</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/11/23/005数组链表/">http://yoursite.com/2019/11/23/005数组链表/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/11/23/005数组链表/">November 23rd 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/11/23/005数组链表/">December 1st 2019, 7:20:19 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/11/24/008栈/" title= "08栈">
+                    <div class="nextTitle">08栈</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/11/21/003复杂度分析/" title= "03-04复杂度分析">
+                    <div class="prevTitle">03-04复杂度分析</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:798937300@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/Don1110" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组"><span class="toc-number">1.</span> <span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数组的关键词"><span class="toc-number">1.1.</span> <span class="toc-text">数组的关键词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#练习"><span class="toc-number">1.2.</span> <span class="toc-text">练习</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链表"><span class="toc-number">2.</span> <span class="toc-text">链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何实现LRU缓存淘汰算法"><span class="toc-number">2.1.</span> <span class="toc-text">如何实现LRU缓存淘汰算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链表结构"><span class="toc-number">2.2.</span> <span class="toc-text">链表结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空间换时间思想"><span class="toc-number">2.3.</span> <span class="toc-text">空间换时间思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#课后思考"><span class="toc-number">2.4.</span> <span class="toc-text">课后思考</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何轻松写出正确的链表代码"><span class="toc-number">2.5.</span> <span class="toc-text">如何轻松写出正确的链表代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#技巧"><span class="toc-number">2.5.1.</span> <span class="toc-text">技巧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#精选五个链表操作"><span class="toc-number">2.5.2.</span> <span class="toc-text">精选五个链表操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#课后思考-1"><span class="toc-number">2.6.</span> <span class="toc-text">课后思考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链表VS数组性能比拼"><span class="toc-number">3.</span> <span class="toc-text">链表VS数组性能比拼</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 6
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/011排序/" >11排序</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/010递归/" >10递归</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/009队列/" >09队列</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/24</span><a class="archive-post-title" href= "/2019/11/24/008栈/" >08栈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/23</span><a class="archive-post-title" href= "/2019/11/23/005数组链表/" >05-07 数组和链表</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/21</span><a class="archive-post-title" href= "/2019/11/21/003复杂度分析/" >03-04复杂度分析</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="数据结构与算法"><span class="iconfont-archer">&#xe606;</span>数据结构与算法</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="算法"><span class="iconfont-archer">&#xe60a;</span>算法</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Don"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
