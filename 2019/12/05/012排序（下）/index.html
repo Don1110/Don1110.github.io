@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>11排序 · Don&#39;s Studio</title>
+    <title>12排序（下） · Don&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >Thrones</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">11排序</a>
+                <a href="#" class="post-name">12排序（下）</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            11排序
+            12排序（下）
             <!-- 404 -->
             
         </h1>
@@ -273,7 +273,7 @@ height:50vh;
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/11/28</span>
+                    <span class="post-intro-time">2019/12/05</span>
                     
                     <span class="shareWrapper">
                         <span class="iconfont-archer shareIcon">&#xe71d;</span>
@@ -392,27 +392,123 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>如何用三行代码找到“最终推荐人”？<br><a id="more"></a> </p>
+        <p>如何用快排思想在O(n)内查找第K大元素？<br><a id="more"></a> </p>
+<ul>
+<li>上一节学习了冒泡排序、插入排序、选择排序这三种排序算法，它们的时间复杂度都是O(n*n)，比较高，适合小规模数据的排序。</li>
+<li>这节学习复杂度为O(nlogn)的排序算法，归并排序和快速排序。这两种排序算法适合大规模的数据排序，比上节的排序算法更要常用。</li>
+</ul>
+<h2 id="归并排序（Merge_Sort）">归并排序（Merge Sort）</h2>
+<h3 id="原理">原理</h3>
+<ul>
+<li><strong>核心思想</strong>：如果要排序一个数组，我们先把数组从中间分成前后两部分，然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组都有序了。</li>
+<li>归并排序使用的就是分治思想。分治，将一个大问题分解成小的子问题来解决。小的子问题解决了，大问题也就解决了。</li>
+<li>分治一般都是用递归来实现的。分治是一种解决问题的处理思想，递归是一种编程技巧。</li>
+</ul>
+<h3 id="实现">实现</h3>
+<ul>
+<li>递归代码的编写技巧<ul>
+<li>分析得出递推公式，然后找到终止条件，最后将递推公式翻译成递归代码。</li>
+</ul>
+</li>
+<li>归并排序的递归公式</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">递推公式：</div><div class="line">merge_sort(p..r)=merge(merge_sort(p..q),merge_sort(q+<span class="number">1.</span>.r))</div><div class="line">终止条件：</div><div class="line">p&gt;=r 不用再继续分解</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>解释递推公式：q等于(p+r)/2。两个子数组都排好序之后，再将两个有序的子数组组合并在一起，这样p到r之间的数据也排好序了。</p>
+</li>
+<li><p>递归代码</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//归并排序，a表示数组，n表示数组大小</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">merge_sort</span>(<span class="keyword">int</span>[] a,n){</div><div class="line">    merge_sort_c(a,<span class="number">0</span>,n-<span class="number">1</span>)</div><div class="line">}</div><div class="line"><span class="comment">//调用递归函数</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] <span class="title">merge_sort_c</span>(a,p,r){</div><div class="line">    <span class="comment">//递归终止条件</span></div><div class="line">    <span class="keyword">if</span>(p&gt;=r){</div><div class="line">        <span class="keyword">return</span> a;</div><div class="line">    }</div><div class="line">    <span class="comment">//取p到r之间的中间位置q;</span></div><div class="line">    <span class="keyword">int</span> q=(p+r)/<span class="number">2</span>;</div><div class="line">    <span class="comment">//分治递归</span></div><div class="line">    merge_sort_c(a,p,q);</div><div class="line">    merge_sort_c(a,q+<span class="number">1</span>,r);</div><div class="line">    <span class="comment">//将a[p...q]和a[q+1...r]合并为a[p...r](伪代码)</span></div><div class="line">    merge(a[p...r],a[p...q],a[q+<span class="number">1.</span>..r]);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//merge函数的伪代码</span></div><div class="line">merge(a[p...r],a[p...q],a[q+<span class="number">1.</span>..r]){</div><div class="line">    <span class="comment">//初始化变量</span></div><div class="line">    <span class="keyword">int</span> i=p;</div><div class="line">    <span class="keyword">int</span> j=q+<span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> k=<span class="number">0</span>;</div><div class="line">    <span class="comment">//申请一个大小跟a[p...r]一样的临时数组</span></div><div class="line">    <span class="keyword">int</span>[] tmp=<span class="keyword">new</span> <span class="keyword">int</span>[];</div><div class="line">    <span class="keyword">while</span>(i&lt;q&&j&lt;r&gt;){</div><div class="line">        <span class="keyword">if</span>(a[i]&lt;=a[j]){</div><div class="line">            tmp[k++]=a[i++];</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            tmp[k++]=a[j++];</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="comment">//判断哪个子数组中有剩余的数据</span></div><div class="line">    <span class="keyword">int</span> start=i;</div><div class="line">    <span class="keyword">int</span> end=q;</div><div class="line">    <span class="keyword">if</span>(j&lt;=r&gt;){</div><div class="line">        start=j;</div><div class="line">        end=r;</div><div class="line">    }</div><div class="line">    <span class="comment">//将剩余的数据拷贝到临时数组tmp</span></div><div class="line">    <span class="keyword">while</span>(start&lt;=end){</div><div class="line">        tmp[k++]=a[start++];</div><div class="line">    }</div><div class="line">    <span class="comment">//将tmp中的数组拷贝回a[p...r]</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=r-p;i++){</div><div class="line">        a[p+i]=tmp[i];</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="性能分析">性能分析</h3>
+<ol>
+<li>归并排序稳定吗？<ul>
+<li>在合并过程中，如果a[p…q]和a[q+1…r]之间有值相同的元素，那么可以像伪代码中那样，先把a[p…q]中的元素放入tmp数组。这样就保证了值相同的元素，在合并前后的先后顺序不变。所以归并排序是一个稳定的排序算法。</li>
+</ul>
+</li>
+<li>归并排序的时间复杂度？<ul>
+<li>归并排序涉及递归，时间复杂度计算：<ul>
+<li>递归适用的场景是，一个问题a可以分解称为多个子问题b、c，那能求解问题a就可以分解为求解问题b、c。问题b、c解决之后，再把b、c的结果合并成a的结果。</li>
+<li>如果我们定义求解问题a的时间是T(a)，求解问题b、c的时间分别是T(b)和T(c)，那么我们可以得到这样的递推关系式：<code>T(a)=T(b)+T(c)+K</code>。其中K等于将两个子问题b、c的结果合并成问题a的结果所消耗的时间。</li>
+<li>不仅递归求解的问题可以写成递推公式，递归代码的时间复杂度也可以写成递推公式。</li>
+</ul>
+</li>
+<li>推导时间复杂度的递推公式可以得到归并排序的时间复杂度为O(nlogn)。</li>
+<li>归并排序的执行效率与要排序的原始数组的有序程度无关，所以其时间复杂度是非常稳定的，不管最好、最坏、还是平均情况，时间复杂度都是O(nlogn)。</li>
+</ul>
+</li>
+<li>归并排序空间复杂度<ul>
+<li>不是原地排序算法，因为归并排序的合并函数，合并两个有序数组为一个有序数组时，需要借助额外的存储空间，每次合并之后，临时开辟的内存空间就被释放掉了，所以空间复杂度是O(n)。</li>
+</ul>
+</li>
+</ol>
+<h2 id="快速排序（Quicksort）">快速排序（Quicksort）</h2>
+<h3 id="原理-1">原理</h3>
+<ul>
+<li><strong>核心思想</strong>：<ul>
+<li>如果要排序数组中下标从p到r之间的一组数据，我选择p到r之间的任意一个数据作为pivot(分区点)。</li>
+<li>遍历p到r之间的数据，将小于pivot的放到左边，小于pivot的放到右边，pivot放在中间。</li>
+<li>根据分治递归的思想，用递归排序下标从p到q-1之间的数据和下标从q+1到r之间的数据（q为分区点），直到区间长度缩小为1，就说明所有数据都有序了。</li>
+</ul>
+</li>
+</ul>
+<h3 id="实现-1">实现</h3>
+<ul>
+<li>递推公式表示：quick_sort(p…r)=quick_sort(p…q-1)+quick_sort(q+1…r)</li>
+<li>终止条件：q&gt;=r</li>
+<li>伪代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//快速排序,a是数组，n表示数组大小</span></div><div class="line">quick_sort(<span class="keyword">int</span>[] a,n){</div><div class="line">    quick_sort_c(a,<span class="number">0</span>,n-<span class="number">1</span>);</div><div class="line">}</div><div class="line"><span class="comment">//快速排序递归函数，p、r为下标</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] <span class="title">quick_sort_c</span>(<span class="keyword">int</span>[] a,p,r){</div><div class="line">    <span class="keyword">if</span>(p&gt;=r){</div><div class="line">        <span class="keyword">return</span> a;</div><div class="line">    }</div><div class="line">    q=partition(a[],p,r)<span class="comment">//获取分区点</span></div><div class="line">    quick_sort_c(a[],p,q-<span class="number">1</span>);</div><div class="line">    quick_sort_c(a[],q+<span class="number">1</span>,r);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ul>
+<li>partition()分区函数就是随机选择一个元素做为pivot（一般情况下可以选择p到r区间的最后一个元素），然后随a[p…r]分区，函数返回pivot的下标。</li>
+<li>partition()原地分区函数伪代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">partition</span>(<span class="keyword">int</span> a[],p,r){</div><div class="line">    <span class="keyword">int</span> pivot=a[r];</div><div class="line">    <span class="keyword">int</span> i=p;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=p;j&lt;r;j++){</div><div class="line">        <span class="keyword">if</span>(a[j]&lt;pivot){</div><div class="line">            <span class="keyword">int</span> tmp=a[i];</div><div class="line">            a[i]=a[j];</div><div class="line">            a[j]=tmp;</div><div class="line">            i++;</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">int</span> tmp1=a[i];</div><div class="line">    a[i]=a[r];</div><div class="line">    a[r]=a[i];</div><div class="line">    <span class="keyword">return</span> i;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="归并排序和快速排序的区别">归并排序和快速排序的区别</h3>
+<ol>
+<li>归并排序的过程是由下到上的，可以先处理子问题，然后再合并。而快速排序是由下到上的，先分区，然后再处理子问题。</li>
+<li>归并排序虽然是稳定的、时间复杂度为O(nlogn)的排序算法，但它是非原地排序算法。快速排序通过设计巧妙的原地分区函数，可以实现原地排序，解决了归并排序占用太多内存的问题。</li>
+</ol>
+<h3 id="性能分析-1">性能分析</h3>
+<ol>
+<li>快速排序是一种原地的、不稳定的排序算法。</li>
+<li>如果每次选择的分区点pivot都很合适，正好能将大区间对等地一分为二，快速排序的时间复杂度是O(nlogn)，实际上很难实现。</li>
+<li>极端的情况下，如果数组中的数据已经是有序的了，每次选择最后一个元素作为分区点pivot，那么每次得到的区间都是不均等的，我们需要大概n次分区操作，才能完成快排。此时时间复杂度O(n*n)</li>
+<li>大部分情况下，快排时间复杂度都能做到O(nlogn)，极端情况下O(n*n)，而且也有很多方法降低极端情况概率。（具体方法后续讲）</li>
+</ol>
+<h2 id="如何用快排思想在O(n)内查找第K大元素？">如何用快排思想在O(n)内查找第K大元素？</h2>
+<ol>
+<li>选择数组区间a[0…n-1]的最后一个元素a[n-1]作为pivot，对数组原地分区，这样就分成了三部分，a[0…p-1]、a[p]、a[p-1..n-1]</li>
+<li>如果p+1=K,那么a[p]就是要求解的元素</li>
+<li>如果K&gt;p+1,说明第K大元素出现在a[p+1…n-1]区间，我们再按照上面的思路递归地在a[p+1…n-1]这个区间内查找。</li>
+<li>同理，如果K&lt; p+1，那么就在a[0…p-1]区间内查找。</li>
+</ol>
+<h2 id="课后思考">课后思考</h2>
+<ol>
+<li>现在你有10个接口访问日志文件，每个日志文件大小约为300MB，每个文件里的日志都是按照时间戳从小到大排序的。你希望将这10个较小的日志文件，合并为1个日志文件，合并之后的日志仍然要按照时间戳从小到大排列。如果处理上述排序人物的机器内存只有1GB，你有什么好的解决思路，能“快速”地将这10个日志文件合并吗？</li>
+</ol>
+<ul>
+<li>太难了。我不会。</li>
+</ul>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://yoursite.com">Don</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/11/28/011排序/">http://yoursite.com/2019/11/28/011排序/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/11/28/011排序/">November 28th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/11/28/011排序/">November 29th 2019, 9:50:58 pm</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/12/05/012排序（下）/">http://yoursite.com/2019/12/05/012排序（下）/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/12/05/012排序（下）/">December 5th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/12/05/012排序（下）/">December 10th 2019, 9:00:06 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
     <!-- paginator  -->
     <ul class="post-paginator">
         <li class="next">
-            
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/11/28/010递归/" title= "10递归">
-                    <div class="nextTitle">10递归</div>
-                </a>
             
         </li>
         <li class="previous">
@@ -531,7 +627,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#归并排序（Merge_Sort）"><span class="toc-number">1.</span> <span class="toc-text">归并排序（Merge Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">1.2.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能分析"><span class="toc-number">1.3.</span> <span class="toc-text">性能分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速排序（Quicksort）"><span class="toc-number">2.</span> <span class="toc-text">快速排序（Quicksort）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理-1"><span class="toc-number">2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现-1"><span class="toc-number">2.2.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#归并排序和快速排序的区别"><span class="toc-number">2.3.</span> <span class="toc-text">归并排序和快速排序的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能分析-1"><span class="toc-number">2.4.</span> <span class="toc-text">性能分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何用快排思想在O(n)内查找第K大元素？"><span class="toc-number">3.</span> <span class="toc-text">如何用快排思想在O(n)内查找第K大元素？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">4.</span> <span class="toc-text">课后思考</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -1368,72 +1464,9 @@ top:50vh;
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 55
+        Total : 56
         </div>
         <!-- search  -->
         
@@ -1449,7 +1482,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/011排序/" >11排序</a>
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2019/12/05/012排序（下）/" >12排序（下）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/011排序（上）/" >11排序（上）</a>
         </li>
     
     
@@ -1554,12 +1592,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/11-12迪米特法则和外观模式/" >11-12迪米特法则和外观模式</a>
+            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/Linux-端口经验/" >Linux-端口经验</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/Linux-端口经验/" >Linux-端口经验</a>
+            <span class="archive-post-date">08/02</span><a class="archive-post-title" href= "/2019/08/02/11-12迪米特法则和外观模式/" >11-12迪米特法则和外观模式</a>
         </li>
     
     
@@ -1653,7 +1691,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java011/" >Java学习-章节11</a>
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java012/" >Java学习-章节12</a>
         </li>
     
     
@@ -1663,12 +1701,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java012/" >Java学习-章节12</a>
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java014/" >Java学习-章节14</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java014/" >Java学习-章节14</a>
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java011/" >Java学习-章节11</a>
         </li>
     
     
@@ -1693,17 +1731,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java004/" >Java学习-章节4</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java005/" >Java学习-章节5</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java006/" >Java学习-章节6</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java004/" >Java学习-章节4</a>
         </li>
     
     
