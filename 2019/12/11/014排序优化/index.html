@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>24职责链模式 · Don&#39;s Studio</title>
+    <title>13排序优化 · Don&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >Thrones</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">24职责链模式</a>
+                <a href="#" class="post-name">13排序优化</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            24职责链模式
+            13排序优化
             <!-- 404 -->
             
         </h1>
@@ -266,14 +266,14 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据结构与算法">数据结构与算法</a>
     
 </div>
                 
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/02</span>
+                    <span class="post-intro-time">2019/12/11</span>
                     
                     <span class="shareWrapper">
                         <span class="iconfont-archer shareIcon">&#xe71d;</span>
@@ -392,51 +392,137 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>职责链模式<br><a id="more"></a></p>
-<h2 id="职责链模式">职责链模式</h2>
-<ul>
-<li><strong>使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。将这个对象连成一条链，并沿着这条链传递请求，直到有一个对象处理它为止。</strong><h3 id="结构">结构</h3>
-</li>
-<li>Handler 定义一个处理请求的接口</li>
-<li>ConcreteHandler 具体处理类，处理它负责的请求，可以访问它的后继者，如果可以处理该请求，就处理之。否则就将该请求转发给它的后继者。</li>
-</ul>
-<h3 id="好处">好处</h3>
-<ul>
-<li>当客户提交一个请求时，请求是沿链传递直至有一个 ConcreteHandler 对象负责处理它。</li>
-<li>接收者和发送者都没有对方的明确信息，且链中的对象自己也并不知道链的结构。结果是职责链可简化对象的相互连接，它们仅需保持一个指向其后继者的引用，而不需保持它所有的候选者的引用。</li>
-<li>可以随时地增加或修改处理一个请求的结构。增强了对象指派职责的灵活性。</li>
-<li>当心一个请求极有可能到了链的末端都得不到处理。或者因为没有正确的配置而得不到出处理。需要事先考虑周全。</li>
-</ul>
-<h3 id="实现">实现</h3>
+        <p>如何实现一个通用的、高效率的排序函数？<br><a id="more"></a> </p>
+<h2 id="如何选择合适的算法？">如何选择合适的算法？</h2>
 <ol>
-<li>Handler类 管理者</li>
+<li>回顾一下前面讲的算法</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">protected</span> String name;</div><div class="line">    <span class="comment">//管理者的上级</span></div><div class="line">    <span class="keyword">protected</span> Manager superior;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="title">Manager</span>(String name) {</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//设置管理者的上级</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSuperior</span>(Manager superior) {</div><div class="line">        <span class="keyword">this</span>.superior = superior;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//设置请求</span></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request);</div><div class="line">}</div></pre></td></tr></table></figure>
-
+<table>
+<thead>
+<tr>
+<th>排序</th>
+<th>时间复杂度</th>
+<th>是稳定排序？</th>
+<th>是原地排序？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冒泡排序</td>
+<td>O(n*n)</td>
+<td>稳定</td>
+<td>原地</td>
+</tr>
+<tr>
+<td>插入排序</td>
+<td>O(n*n)</td>
+<td>稳定</td>
+<td>原地</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td>O(n*n)</td>
+<td>不稳定</td>
+<td>原地</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>O(nlogn)</td>
+<td>不稳定</td>
+<td>原地</td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td>O(nlogn)</td>
+<td>稳定</td>
+<td>非原地</td>
+</tr>
+<tr>
+<td>桶排序</td>
+<td>O(n+k)（k是数据范围）</td>
+<td>稳定</td>
+<td>非原地</td>
+</tr>
+<tr>
+<td>计数排序</td>
+<td>O(n)</td>
+<td>稳定</td>
+<td>非原地</td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td>O(dn)（d是维度）</td>
+<td>稳定</td>
+<td>非原地</td>
+</tr>
+</tbody>
+</table>
 <ol start="2">
-<li>ConcreteHandler类</li>
+<li>线性排序算法的时间复杂度比较低，使用场景比较特殊。如果要写一个通用排序算法，不能选择线性排序算法</li>
+<li>如果对于小规模数据进行排序，可以选择时间复杂度是O(n*n)的算法。如果对大规模数据排序，O(nlogn)的算法更高效。</li>
+<li>所以，为了兼顾任意规模数据的排序，一般都会首选事件复杂度是O(nlogn)的排序算法来实现排序函数。</li>
+<li>堆排序和快速排序都有比较多的应用。Java语言采用堆排序实现排序函数，C语言使用快速排序实现。</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//经理</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonManager</span> <span class="keyword">extends</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">CommonManager</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>&&request.getNumber()&lt;=<span class="number">2</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">if</span>(superior!=<span class="keyword">null</span>)</div><div class="line">            {</div><div class="line">                superior.RequestApplications(request);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//总监</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Majordomo</span> <span class="keyword">extends</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">Majordomo</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>&&request.getNumber()&lt;=<span class="number">5</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">if</span>(superior!=<span class="keyword">null</span>)</div><div class="line">            {</div><div class="line">                superior.RequestApplications(request);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//总经理</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GeneralManager</span> <span class="keyword">extends</span> <span class="title">Manager</span></span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">GeneralManager</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (request.getRequestType()==<span class="string">"加薪"</span>&&request.getNumber()&lt;=<span class="number">500</span>){</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (request.getRequestType()==<span class="string">"加薪"</span>&&request.getNumber()&gt;<span class="number">500</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"再说吧"</span>);</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>Request 请求类</li>
+<h2 id="如何优化快速排序？">如何优化快速排序？</h2>
+<p>实际上，快速排序O(n*n)时间复杂度出现的主要原因还是因为我们分区点选的不够合理。<br>最理想的分区点是：被分区点分开的两个分区中，数据的数量差不多。<br>为了提高算法的性能，我们要尽可能地让每次分区都比较平均。<br>下面介绍两种比较常用、简单的分区算法。</p>
+<ol>
+<li>三数取中法<ul>
+<li>从区间的首、尾、中间，分别取出一个数，然后对比大小，取这三个数的中间值作为分区点。</li>
+<li>如果要排序的数组比加大，那“三数取中”可能就不够了，可能要“五数取中”或者“十数取中”。</li>
+</ul>
+</li>
+<li>随机法<ul>
+<li>每次从要排序的区间中，随机选择一个元素作为分区点。</li>
+<li>从概率的角度说，每次分区点选择不会都比较好，也不会都比较差，所以平均来说比较好。时间复杂度退化到O(n*n)的情况出现的可能性不大。  </li>
+</ul>
+</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span></span></div><div class="line">{</div><div class="line">    <span class="comment">//申请类别</span></div><div class="line">    <span class="keyword">private</span> String requestType;</div><div class="line">    <span class="keyword">public</span> String <span class="title">getRequestType</span>() {</div><div class="line">        <span class="keyword">return</span> requestType;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestType</span>(String requestType) {</div><div class="line">        <span class="keyword">this</span>.requestType = requestType;</div><div class="line">    }</div><div class="line">    <span class="comment">//申请内容</span></div><div class="line">    <span class="keyword">private</span> String requestContent;</div><div class="line">    <span class="keyword">public</span> String <span class="title">getRequestContent</span>() {</div><div class="line">        <span class="keyword">return</span> requestContent;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestContent</span>(String requestContent) {</div><div class="line">        <span class="keyword">this</span>.requestContent = requestContent;</div><div class="line">    }</div><div class="line">    <span class="comment">//数量</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNumber</span>() {</div><div class="line">        <span class="keyword">return</span> number;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNumber</span>(<span class="keyword">int</span> number) {</div><div class="line">        <span class="keyword">this</span>.number = number;</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>客户端</li>
+<p>快排是用递归实现的，要警惕堆栈溢出。<br>为了避免快速排序里，递归过深而堆栈过小，导致堆栈溢出没有两种解决办法。</p>
+<ol>
+<li>限制递归深度，一旦递归过深，超过了我们事先设定的阈值，就停止递归。</li>
+<li>通过在堆上模拟实现一个函数调用栈，手动模拟递归压栈、出栈的过程，这样就没有了系统栈大小的限制。</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChainofResponsibility</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        CommonManager jinli=<span class="keyword">new</span> CommonManager(<span class="string">"金利"</span>);</div><div class="line">        Majordomo zongjian=<span class="keyword">new</span> Majordomo(<span class="string">"宗剑"</span>);</div><div class="line">        GeneralManager zhongjingli =<span class="keyword">new</span> GeneralManager(<span class="string">"钟精励"</span>);</div><div class="line"></div><div class="line">        jinli.setSuperior(zongjian);</div><div class="line">        zongjian.setSuperior(zhongjingli);</div><div class="line"></div><div class="line">        Request request=<span class="keyword">new</span> Request();</div><div class="line">        request.setRequestType(<span class="string">"请假"</span>);</div><div class="line">        request.setRequestContent(<span class="string">"小菜请假"</span>);</div><div class="line">        request.setNumber(<span class="number">1</span>);</div><div class="line">        jinli.RequestApplications(request);</div><div class="line"></div><div class="line">        Request request2=<span class="keyword">new</span> Request();</div><div class="line">        request2.setRequestType(<span class="string">"请假"</span>);</div><div class="line">        request2.setRequestContent(<span class="string">"小菜请假"</span>);</div><div class="line">        request2.setNumber(<span class="number">4</span>);</div><div class="line">        jinli.RequestApplications(request2);</div><div class="line"></div><div class="line">        Request request3=<span class="keyword">new</span> Request();</div><div class="line">        request3.setRequestType(<span class="string">"加薪"</span>);</div><div class="line">        request3.setRequestContent(<span class="string">"小菜请求加薪"</span>);</div><div class="line">        request3.setNumber(<span class="number">100</span>);</div><div class="line">        jinli.RequestApplications(request3);</div><div class="line"></div><div class="line">        Request request4=<span class="keyword">new</span> Request();</div><div class="line">        request4.setRequestType(<span class="string">"加薪"</span>);</div><div class="line">        request4.setRequestContent(<span class="string">"小菜请求加薪"</span>);</div><div class="line">        request4.setNumber(<span class="number">1000</span>);</div><div class="line">        jinli.RequestApplications(request4);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
-
+<h2 id="举例分析排序函数">举例分析排序函数</h2>
+<p>Glibc的qsort()</p>
+<ol>
+<li>qsort()优先使用归并排序来排序输入数据。</li>
+<li>要排序的数据量比较大的时候，qsort()会改为用快速排序算法来排序</li>
+<li>qsort()选择快速排序分区点使用三数取中法</li>
+<li>qsort()通过自己晒西安一个堆上的栈，手动模拟递归来解决递归太深导致堆栈溢出的问题，</li>
+<li>实际上qsort()还用到了快速排序，在排序区间中元素个数小于等于4时。因为在小规模数据面前。Q(n*n)时间复杂度的算法并不一定比O(nlogn)的算法执行时间长。</li>
+</ol>
+<h2 id="课后思考">课后思考</h2>
+<ol>
+<li>上面分析了C语言中的qsort()的底层排序算法，能否分析一下你所熟悉的语言中的排序函数都是用什么4排序算法实现的呢？都有哪些优化技巧？</li>
+</ol>
+<ul>
+<li><p>Arrays.sort的源码，主要采用TimSort算法, 大致思路是这样的：</p>
+<ol>
+<li>元素个数 &lt; 32, 采用二分查找插入排序(Binary Sort)</li>
+<li>元素个数 &gt;= 32, 采用归并排序，归并的核心是分区(Run)</li>
+<li>找连续升或降的序列作为分区，分区最终被调整为升序后压入栈</li>
+<li>如果分区长度太小，通过二分插入排序扩充分区长度到分区最小阙值</li>
+<li>每次压入栈，都要检查栈内已存在的分区是否满足合并条件，满足则进行合并</li>
+<li>最终栈内的分区被全部合并，得到一个排序好的数组</li>
+</ol>
+</li>
+<li><p>Timsort的合并算法非常巧妙：</p>
+<ol>
+<li>找出左分区最后一个元素(最大)及在右分区的位置</li>
+<li>找出右分区第一个元素(最小)及在左分区的位置</li>
+<li>仅对这两个位置之间的元素进行合并，之外的元素本身就是有序的</li>
+</ol>
+</li>
+</ul>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://yoursite.com">Don</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/09/02/24职责链模式/">http://yoursite.com/2019/09/02/24职责链模式/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/09/02/24职责链模式/">September 2nd 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/09/02/24职责链模式/">September 2nd 2019, 8:38:14 pm</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/12/11/014排序优化/">http://yoursite.com/2019/12/11/014排序优化/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/12/11/014排序优化/">December 11th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/12/11/014排序优化/">December 13th 2019, 10:09:25 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -445,16 +531,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/09/03/25中介者模式/" title= "25中介者模式">
-                    <div class="nextTitle">25中介者模式</div>
+                <a href= "/2019/12/13/015-016二分查找（上下）/" title= "15-16二分查找（上下）">
+                    <div class="nextTitle">15-16二分查找（上下）</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/31/23命令模式/" title= "23命令模式">
-                    <div class="prevTitle">23命令模式</div>
+                <a href= "/2019/12/10/013线性排序/" title= "13线性排序">
+                    <div class="prevTitle">13线性排序</div>
                 </a>
             
         </li>
@@ -566,7 +652,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#职责链模式"><span class="toc-number">1.</span> <span class="toc-text">职责链模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#结构"><span class="toc-number">1.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#好处"><span class="toc-number">1.2.</span> <span class="toc-text">好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">1.3.</span> <span class="toc-text">实现</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何选择合适的算法？"><span class="toc-number">1.</span> <span class="toc-text">如何选择合适的算法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何优化快速排序？"><span class="toc-number">2.</span> <span class="toc-text">如何优化快速排序？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例分析排序函数"><span class="toc-number">3.</span> <span class="toc-text">举例分析排序函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">4.</span> <span class="toc-text">课后思考</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

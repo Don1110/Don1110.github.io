@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>24职责链模式 · Don&#39;s Studio</title>
+    <title>13线性排序 · Don&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >Thrones</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">24职责链模式</a>
+                <a href="#" class="post-name">13线性排序</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            24职责链模式
+            13线性排序
             <!-- 404 -->
             
         </h1>
@@ -266,14 +266,14 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据结构与算法">数据结构与算法</a>
     
 </div>
                 
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/02</span>
+                    <span class="post-intro-time">2019/12/10</span>
                     
                     <span class="shareWrapper">
                         <span class="iconfont-archer shareIcon">&#xe71d;</span>
@@ -392,51 +392,67 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>职责链模式<br><a id="more"></a></p>
-<h2 id="职责链模式">职责链模式</h2>
+        <p>如何根据年龄给100万用户排序？<br><a id="more"></a><br>这节学习时间复杂度是O(n)的排序算法：桶排序、计数排序、基数排序。因为这些算法的时间复杂度是线性的，所以把这类排序算法叫做线性排序。（Linear sort）</p>
+<h2 id="桶排序(Bucket_sort)">桶排序(Bucket sort)</h2>
+<h3 id="原理">原理</h3>
 <ul>
-<li><strong>使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。将这个对象连成一条链，并沿着这条链传递请求，直到有一个对象处理它为止。</strong><h3 id="结构">结构</h3>
-</li>
-<li>Handler 定义一个处理请求的接口</li>
-<li>ConcreteHandler 具体处理类，处理它负责的请求，可以访问它的后继者，如果可以处理该请求，就处理之。否则就将该请求转发给它的后继者。</li>
+<li><strong>核心思想</strong> ：将要排序的数据分到几个有序的的桶里，每个桶里的数据再单独进行排序。桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。</li>
+<li>桶排序的时间复杂度是O(n)，是不是可以替代之前讲的排序算法了？<ul>
+<li>不是。</li>
 </ul>
-<h3 id="好处">好处</h3>
-<ul>
-<li>当客户提交一个请求时，请求是沿链传递直至有一个 ConcreteHandler 对象负责处理它。</li>
-<li>接收者和发送者都没有对方的明确信息，且链中的对象自己也并不知道链的结构。结果是职责链可简化对象的相互连接，它们仅需保持一个指向其后继者的引用，而不需保持它所有的候选者的引用。</li>
-<li>可以随时地增加或修改处理一个请求的结构。增强了对象指派职责的灵活性。</li>
-<li>当心一个请求极有可能到了链的末端都得不到处理。或者因为没有正确的配置而得不到出处理。需要事先考虑周全。</li>
-</ul>
-<h3 id="实现">实现</h3>
 <ol>
-<li>Handler类 管理者</li>
+<li>首先，要排序的数据需要很容易就能划分成m个桶，并且，桶与桶之间有着天然的大小顺序，这样让每个桶内的数据都排序完成之后，桶与桶之间的数据不需要再进行排序。</li>
+<li>数据在各个桶之前的分布式比较均匀的。如果数据经过桶的划分之后，有些桶里的数据非常多，有些非常少，很不平均，那桶内数据排序的时间复杂度就不熟常量级了，极端情况下，如果数据都被分到了一个桶里，就退化成了O(nlogn)的排序算法了。</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">protected</span> String name;</div><div class="line">    <span class="comment">//管理者的上级</span></div><div class="line">    <span class="keyword">protected</span> Manager superior;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="title">Manager</span>(String name) {</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//设置管理者的上级</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSuperior</span>(Manager superior) {</div><div class="line">        <span class="keyword">this</span>.superior = superior;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//设置请求</span></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request);</div><div class="line">}</div></pre></td></tr></table></figure>
+</li>
+<li>桶排序比较适合用在外部排序中。所谓的外部排序就是数据存储在外部磁盘中，数据量比较大，内存有限，无法将数据全部加载到内存中。</li>
+</ul>
+<h2 id="计数排序(Counting_sort)">计数排序(Counting sort)</h2>
+<h3 id="原理-1">原理</h3>
+<ul>
+<li>可以将计数排序视为桶排序的一种特殊情况。</li>
+<li>当要排序n个数据，所处的范围并不大的时候，比如最大值是k，我们就可以把数据划分成k个桶。每个桶内的数据值都是相同的，省掉了桶内排序的时间。<h3 id="实现">实现</h3>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//计数排序，a是数组，n是数组大小。假设数组中存储的都是非负整数。</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countingSort</span>(<span class="keyword">int</span>[]a ,<span class="keyword">int</span> n){</div><div class="line">    <span class="keyword">if</span>(n&lt;=<span class="number">1</span>&gt;) <span class="keyword">return</span>;</div><div class="line">    <span class="comment">//查找数组中数据的范围</span></div><div class="line">    <span class="keyword">int</span> max=a[<span class="number">0</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;++i){</div><div class="line">        <span class="keyword">if</span>(max&lt;a[i]){</div><div class="line">            max=a[i];</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">int</span>[] c=<span class="keyword">new</span> <span class="keyword">int</span>[max+<span class="number">1</span>];<span class="comment">//申请一个计数数组，下标大小[0,max]</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=max;++i){</div><div class="line">        c[i]=<span class="number">0</span>;</div><div class="line">    }</div><div class="line">    <span class="comment">//计算每个元素的个数，放入c中</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;++i){</div><div class="line">        c[a[i]]++;</div><div class="line">    }</div><div class="line">    <span class="comment">//依次累加</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=max;++i){</div><div class="line">        c[i]=c[i-<span class="number">1</span>]+c[i];</div><div class="line">    }</div><div class="line">    <span class="comment">//临时数组r，存储排序之后的结果</span></div><div class="line">    <span class="keyword">int</span>[] r=<span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">    <span class="comment">//计算排序的关键步骤</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n-<span class="number">1</span>;i&gt;=<span class="number">0</span>;--i){</div><div class="line">        <span class="keyword">int</span> index=c[a[i]]-<span class="number">1</span>;</div><div class="line">        r[index]=a[i];</div><div class="line">        c[a[i]]--;</div><div class="line">    }</div><div class="line">    <span class="comment">//将结果拷贝给a数组</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;++i){</div><div class="line">        a[i]=r[i];</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>ConcreteHandler类</li>
+<ul>
+<li>计数排序只能用在数据范围不大的场景中，如果数据范围k比要排序的数据n大很多，就不适合计数排序了。</li>
+<li>而且，计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下，转换为非负整数。</li>
+</ul>
+<h2 id="基数排序（Radix_sort)">基数排序（Radix sort)</h2>
+<h3 id="原理-2">原理</h3>
+<ul>
+<li>假如有10万个手机号码，希望将这10万个手机号码从小到大排序。</li>
+<li>按每位来排序的排序算法要是稳定的，否则这个实现思路不正确。</li>
+<li>借助稳定的排序算法，先按照最后一位来排序手机号码，然后再按照倒数第二位重新排序，以此类推，最后按照第一位重新排序。经过11次排序之后，手机号码就都有序了。<h3 id="总结">总结</h3>
+</li>
+<li>基数排序对要排序的数据是具有要求的，需要可以分割出独立的“位”来比较，而且位之间有递进关系，如果a数据的高位比b数据大，那剩下的低位就不用比较了。</li>
+<li>除此之外，每一位的数据范围不能太大，要可以用线性排序算法来排序，否则技术排序的时间复杂度就无法做到O(n)了。</li>
+</ul>
+<h2 id="如何根据年龄给100万用户排序？">如何根据年龄给100万用户排序？</h2>
+<ul>
+<li>假设年龄的范围最小为1岁，最大不超过120岁。</li>
+<li>遍历这100万用户，根据年龄将其划分到这120个桶里</li>
+<li>然后依次顺序遍历这120个桶中的元素</li>
+<li>这样就得到了按照年龄排序的100万用户数据</li>
+</ul>
+<h2 id="课后思考">课后思考</h2>
+<ol>
+<li>假设我们现在需要对D,a,F,B,c,A,z这个字符串进行排序，要求将其中所有小写字母都排在大写字母的前面，但小写字母内部和大写字母内部不要求有序。比如经过排序之后为a,c,z,D,F,B,A，这个如何来实现呢？如果字符串中存储的不仅有大小写字母，还有数字。要将小写字母放到前面，大写字母放到最后，数字放到中间，不用排序算法，又该怎么解决呢？</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//经理</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonManager</span> <span class="keyword">extends</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">CommonManager</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>&&request.getNumber()&lt;=<span class="number">2</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">if</span>(superior!=<span class="keyword">null</span>)</div><div class="line">            {</div><div class="line">                superior.RequestApplications(request);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//总监</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Majordomo</span> <span class="keyword">extends</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">Majordomo</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>&&request.getNumber()&lt;=<span class="number">5</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">if</span>(superior!=<span class="keyword">null</span>)</div><div class="line">            {</div><div class="line">                superior.RequestApplications(request);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//总经理</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GeneralManager</span> <span class="keyword">extends</span> <span class="title">Manager</span></span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">GeneralManager</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (request.getRequestType()==<span class="string">"加薪"</span>&&request.getNumber()&lt;=<span class="number">500</span>){</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (request.getRequestType()==<span class="string">"加薪"</span>&&request.getNumber()&gt;<span class="number">500</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"再说吧"</span>);</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>Request 请求类</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span></span></div><div class="line">{</div><div class="line">    <span class="comment">//申请类别</span></div><div class="line">    <span class="keyword">private</span> String requestType;</div><div class="line">    <span class="keyword">public</span> String <span class="title">getRequestType</span>() {</div><div class="line">        <span class="keyword">return</span> requestType;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestType</span>(String requestType) {</div><div class="line">        <span class="keyword">this</span>.requestType = requestType;</div><div class="line">    }</div><div class="line">    <span class="comment">//申请内容</span></div><div class="line">    <span class="keyword">private</span> String requestContent;</div><div class="line">    <span class="keyword">public</span> String <span class="title">getRequestContent</span>() {</div><div class="line">        <span class="keyword">return</span> requestContent;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestContent</span>(String requestContent) {</div><div class="line">        <span class="keyword">this</span>.requestContent = requestContent;</div><div class="line">    }</div><div class="line">    <span class="comment">//数量</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNumber</span>() {</div><div class="line">        <span class="keyword">return</span> number;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNumber</span>(<span class="keyword">int</span> number) {</div><div class="line">        <span class="keyword">this</span>.number = number;</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>客户端</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChainofResponsibility</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        CommonManager jinli=<span class="keyword">new</span> CommonManager(<span class="string">"金利"</span>);</div><div class="line">        Majordomo zongjian=<span class="keyword">new</span> Majordomo(<span class="string">"宗剑"</span>);</div><div class="line">        GeneralManager zhongjingli =<span class="keyword">new</span> GeneralManager(<span class="string">"钟精励"</span>);</div><div class="line"></div><div class="line">        jinli.setSuperior(zongjian);</div><div class="line">        zongjian.setSuperior(zhongjingli);</div><div class="line"></div><div class="line">        Request request=<span class="keyword">new</span> Request();</div><div class="line">        request.setRequestType(<span class="string">"请假"</span>);</div><div class="line">        request.setRequestContent(<span class="string">"小菜请假"</span>);</div><div class="line">        request.setNumber(<span class="number">1</span>);</div><div class="line">        jinli.RequestApplications(request);</div><div class="line"></div><div class="line">        Request request2=<span class="keyword">new</span> Request();</div><div class="line">        request2.setRequestType(<span class="string">"请假"</span>);</div><div class="line">        request2.setRequestContent(<span class="string">"小菜请假"</span>);</div><div class="line">        request2.setNumber(<span class="number">4</span>);</div><div class="line">        jinli.RequestApplications(request2);</div><div class="line"></div><div class="line">        Request request3=<span class="keyword">new</span> Request();</div><div class="line">        request3.setRequestType(<span class="string">"加薪"</span>);</div><div class="line">        request3.setRequestContent(<span class="string">"小菜请求加薪"</span>);</div><div class="line">        request3.setNumber(<span class="number">100</span>);</div><div class="line">        jinli.RequestApplications(request3);</div><div class="line"></div><div class="line">        Request request4=<span class="keyword">new</span> Request();</div><div class="line">        request4.setRequestType(<span class="string">"加薪"</span>);</div><div class="line">        request4.setRequestContent(<span class="string">"小菜请求加薪"</span>);</div><div class="line">        request4.setNumber(<span class="number">1000</span>);</div><div class="line">        jinli.RequestApplications(request4);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
-
+<ul>
+<li>利用桶排序思想，弄小写，大写，数字三个桶，遍历一遍，都放进去，然后再从桶中取出来就行了。相当于遍历了两遍，复杂度O(n)</li>
+</ul>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://yoursite.com">Don</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/09/02/24职责链模式/">http://yoursite.com/2019/09/02/24职责链模式/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/09/02/24职责链模式/">September 2nd 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/09/02/24职责链模式/">September 2nd 2019, 8:38:14 pm</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/12/10/013线性排序/">http://yoursite.com/2019/12/10/013线性排序/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/12/10/013线性排序/">December 10th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/12/10/013线性排序/">December 11th 2019, 4:38:31 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -445,16 +461,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/09/03/25中介者模式/" title= "25中介者模式">
-                    <div class="nextTitle">25中介者模式</div>
+                <a href= "/2019/12/11/014排序优化/" title= "13排序优化">
+                    <div class="nextTitle">13排序优化</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/31/23命令模式/" title= "23命令模式">
-                    <div class="prevTitle">23命令模式</div>
+                <a href= "/2019/12/05/012排序（下）/" title= "12排序（下）">
+                    <div class="prevTitle">12排序（下）</div>
                 </a>
             
         </li>
@@ -566,7 +582,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#职责链模式"><span class="toc-number">1.</span> <span class="toc-text">职责链模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#结构"><span class="toc-number">1.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#好处"><span class="toc-number">1.2.</span> <span class="toc-text">好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">1.3.</span> <span class="toc-text">实现</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#桶排序(Bucket_sort)"><span class="toc-number">1.</span> <span class="toc-text">桶排序(Bucket sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计数排序(Counting_sort)"><span class="toc-number">2.</span> <span class="toc-text">计数排序(Counting sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理-1"><span class="toc-number">2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">2.2.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基数排序（Radix_sort)"><span class="toc-number">3.</span> <span class="toc-text">基数排序（Radix sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理-2"><span class="toc-number">3.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">3.2.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何根据年龄给100万用户排序？"><span class="toc-number">4.</span> <span class="toc-text">如何根据年龄给100万用户排序？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">5.</span> <span class="toc-text">课后思考</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

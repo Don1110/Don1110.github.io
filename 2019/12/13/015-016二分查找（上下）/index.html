@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>24职责链模式 · Don&#39;s Studio</title>
+    <title>15-16二分查找（上下） · Don&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >Thrones</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">24职责链模式</a>
+                <a href="#" class="post-name">15-16二分查找（上下）</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            24职责链模式
+            15-16二分查找（上下）
             <!-- 404 -->
             
         </h1>
@@ -266,14 +266,14 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "设计模式">设计模式</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据结构与算法">数据结构与算法</a>
     
 </div>
                 
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/02</span>
+                    <span class="post-intro-time">2019/12/13</span>
                     
                     <span class="shareWrapper">
                         <span class="iconfont-archer shareIcon">&#xe71d;</span>
@@ -392,51 +392,149 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>职责链模式<br><a id="more"></a></p>
-<h2 id="职责链模式">职责链模式</h2>
-<ul>
-<li><strong>使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。将这个对象连成一条链，并沿着这条链传递请求，直到有一个对象处理它为止。</strong><h3 id="结构">结构</h3>
-</li>
-<li>Handler 定义一个处理请求的接口</li>
-<li>ConcreteHandler 具体处理类，处理它负责的请求，可以访问它的后继者，如果可以处理该请求，就处理之。否则就将该请求转发给它的后继者。</li>
-</ul>
-<h3 id="好处">好处</h3>
-<ul>
-<li>当客户提交一个请求时，请求是沿链传递直至有一个 ConcreteHandler 对象负责处理它。</li>
-<li>接收者和发送者都没有对方的明确信息，且链中的对象自己也并不知道链的结构。结果是职责链可简化对象的相互连接，它们仅需保持一个指向其后继者的引用，而不需保持它所有的候选者的引用。</li>
-<li>可以随时地增加或修改处理一个请求的结构。增强了对象指派职责的灵活性。</li>
-<li>当心一个请求极有可能到了链的末端都得不到处理。或者因为没有正确的配置而得不到出处理。需要事先考虑周全。</li>
-</ul>
-<h3 id="实现">实现</h3>
+        <p>如何用最省内存的方式实现快速查找功能？<br>如何快速定位IP对应的省份地址？<br><a id="more"></a> </p>
+<h1 id="二分查找（上）">二分查找（上）</h1>
+<h2 id="无处不在的二分查找思想">无处不在的二分查找思想</h2>
+<p>二分查找针对的是一个有序的数据集合，查找思想有点类似分治思想。每次都通过跟区间的中间元素对比，将带查找的区间缩小为之前的一半，直到找到要查找的元素，或者区间被缩小为0。</p>
+<h2 id="O(logn)惊人的查找速度">O(logn)惊人的查找速度</h2>
+<p>logn是一个非常“恐怖”的数量级，即便n非常非常大，对应的logn也很小。</p>
+<h2 id="二分查找的递归与非递归实现">二分查找的递归与非递归实现</h2>
+<h3 id="循环实现">循环实现</h3>
+<p>最简单的情况就是有序数组汇总不存在重复元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span>(<span class="keyword">int</span>[] a,<span class="keyword">int</span> n,<span class="keyword">int</span> value){</div><div class="line">    <span class="keyword">int</span> low=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> high=n-<span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(low&lt;=high&gt;){</div><div class="line">        <span class="keyword">int</span> mid=(low+high)/<span class="number">2</span>;</div><div class="line">        <span class="keyword">if</span>(a[mid]==value){</div><div class="line">            <span class="keyword">return</span> mid;</div><div class="line">        }<span class="keyword">else</span> <span class="keyword">if</span>(a[mid]&lt;value&gt;){</div><div class="line">            low=mid+<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            hige=mid-<span class="number">1</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>强调容易出错的三个地方：</p>
 <ol>
-<li>Handler类 管理者</li>
+<li>循环退出条件<ul>
+<li>注意是low&lt;=high，而不是low &lt; high</li>
+</ul>
+</li>
+<li>mid的取值<ul>
+<li>实际上 mid=(low+high)/2 这种写法是有问题的。因为如果low、high比较大，两者之和可能会溢出。</li>
+<li>改进的方法是将mid的计算方式写成 low+(high-low)/2.</li>
+<li>更进一步，如果追求性能极致，可以转换为位运算。((high-low)&gt;&gt;1)。计算机处理位运算更快。</li>
+</ul>
+</li>
+<li>low和high的更新<ul>
+<li>low=mid+1,high=mid-1。</li>
+<li>如果写成low=mid或者high=mid，就可能会发生死循环。</li>
+</ul>
+</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">protected</span> String name;</div><div class="line">    <span class="comment">//管理者的上级</span></div><div class="line">    <span class="keyword">protected</span> Manager superior;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="title">Manager</span>(String name) {</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//设置管理者的上级</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSuperior</span>(Manager superior) {</div><div class="line">        <span class="keyword">this</span>.superior = superior;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//设置请求</span></div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request);</div><div class="line">}</div></pre></td></tr></table></figure>
+<h3 id="递归实现">递归实现</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//二分查找的递归实现</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span>(<span class="keyword">int</span>[] a,<span class="keyword">int</span> n,<span class="keyword">int</span> val){</div><div class="line">    <span class="keyword">return</span> bsearchInternally(a,<span class="number">0</span>,n-<span class="number">1</span>,val);</div><div class="line">}</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">bsearchInternally</span>(<span class="keyword">int</span>[] a,<span class="keyword">int</span> low,<span class="keyword">int</span> high,<span class="keyword">int</span> value){</div><div class="line">    <span class="keyword">if</span>(low&gt;high) <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> mid=low+((high-low)&gt;&gt;<span class="number">1</span>);</div><div class="line">    <span class="keyword">if</span>(a[mid]==value){</div><div class="line">        <span class="keyword">return</span> mid;</div><div class="line">    }<span class="keyword">else</span> <span class="keyword">if</span>(a[mid]&lt;value){</div><div class="line">        <span class="keyword">return</span> bsearchInternally(a,mid+<span class="number">1</span>,high,value);</div><div class="line">    }<span class="keyword">else</span>{</div><div class="line">        <span class="keyword">return</span> bsearchInternally(a,low,mid-<span class="number">1</span>,value);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h2 id="二分查找应用场景的局限性">二分查找应用场景的局限性</h2>
+<ol>
+<li>二分查找依赖的是顺序表结构，简单点就是数组。（链表的随机访问时间复杂度是O(n)，数组是O(1)，所以用链表复杂度太高了。）</li>
+<li>二分查找针对的是有序数据<ul>
+<li>如果数据我也无序，需要先排序。如果针对的是一组静态数据，没有频繁地插入、删除，可以进行一次排序、多次二分查找。这样排序的成本可能被均摊，二分查找的边际成本就会比较低。</li>
+<li>如果数据集合有频繁的插入和删除操作，要想使用二分查找，要么每次插入、删除操作之后保证数据仍然有序，要么在每次二分查找前都先进行排序。针对这种动态数据集合，无论用哪种方法，维护成本都很高。这种不适合使用二分查找，等后续讲二叉树的时候会讲到。</li>
+</ul>
+</li>
+<li>数据量太小不适合二分查找<ul>
+<li>除了一个例外：如果数据之间的比较操作非常耗时，不管数据量大小，都推荐使用二分查找。</li>
+</ul>
+</li>
+<li>数据量太大也不适合二分查找<ul>
+<li>因为底层依赖数组这样的数据结构，需要内存空间的连续。太大的数据用数组存储比较吃力。</li>
+</ul>
+</li>
+</ol>
+<h2 id="如何用最省内存的方式实现快速查找功能？">如何用最省内存的方式实现快速查找功能？</h2>
+<p>即，如何在1000万个整数中快速查找某个整数？内存限制是100M。</p>
+<ul>
+<li>每个数据大小是8字节，将数据存储在数组中，内存占用就是80MB。（1KB=1024B,1MB=1024KB）。</li>
+<li>最简单的办法就是将数据存储在数组汇总，先对这1000万个数据从小到大排序，再利用二分查找算法，就可以快速地查找需要的数据了。</li>
+<li>虽然大部分情况下，用二分查找可以解决的问题，用散列表、二叉树都可以解决。但是，后面会讲，无论是散列表还是二叉树都需要比较多的额外的存储空间。如果用散列表或者二叉树来存储这1000万数据，用100MB内存肯定是存不下的。</li>
+</ul>
+<h2 id="课后思考">课后思考</h2>
+<ol>
+<li><p>如何变成实现“求一个数的平方根”？要求精确到小数点后6位。</p>
+<ul>
+<li>因为要精确到后六位，可以先用二分查找出整数位，然后再二分查找小数第一位，第二位，到第六位。</li>
+<li>整数查找很简单，判断当前数小于+1后大于即可找到，</li>
+<li>小数查找举查找小数后第一位来说，从x.0到(x+1).0，查找终止条件与整数一样，当前数小于，加0.1大于，</li>
+<li>后面的位数以此类推，可以用x*10^(-i)通项来循环或者递归，终止条件是i&gt;6，</li>
+<li>想了一下复杂度，每次二分是logn，包括整数位会查找7次，所以时间复杂度为7logn。空间复杂度没有开辟新的储存空间，空间复杂度为1。</li>
+</ul>
+</li>
+<li><p>如果数据使用链表存储，二分查找的时间复杂度会变得很高，那么查找的时间复杂度究竟是多少？</p>
+<ul>
+<li>假设链表长度为n，二分查找每次都要找到中间点(计算中忽略奇偶数差异): </li>
+<li>第一次查找中间点，需要移动指针n/2次；</li>
+<li>第二次，需要移动指针n/4次；</li>
+<li>第三次需要移动指针n/8次；</li>
+<li>……</li>
+<li>以此类推，一直到1次为值</li>
+<li>总共指针移动次数(查找次数) = n/2 + n/4 + n/8 + …+ 1，这显然是个等比数列，根据等比数列求和公式：Sum = n - 1. </li>
+<li>最后算法时间复杂度是：O(n-1)，忽略常数，记为O(n)，时间复杂度和顺序查找时间复杂度相同</li>
+</ul>
+</li>
+</ol>
+<h1 id="二分查找（下）">二分查找（下）</h1>
+<h2 id="常见的二分查找表变体问题">常见的二分查找表变体问题</h2>
+<ul>
+<li>查找第一个值等于给定值的元素</li>
+<li>查找最后一个值等于给定值的元素</li>
+<li>查找第一个大于等于给定值的元素</li>
+<li>查找最后一个小于等于给定值的元素</li>
+</ul>
+<ol>
+<li>查找第一个值等于给定值的元素</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span> (<span class="keyword">int</span>[] a,<span class="keyword">int</span> n,<span class="keyword">int</span> value){</div><div class="line">    <span class="keyword">int</span> low=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> high=n-<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(low&lt;=high){</div><div class="line">        <span class="keyword">int</span> mid =low+((high-low)&gt;&gt;<span class="number">1</span>);</div><div class="line">        <span class="keyword">if</span>(a[mid]&gt;value){</div><div class="line">            high=mid-<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span> <span class="keyword">if</span>(a[mid]&lt;value){</div><div class="line">            low=mid+<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            <span class="keyword">if</span>((mid==<span class="number">0</span>)||(a[mid-<span class="number">1</span>]!=value)) <span class="keyword">return</span> mid;<span class="comment">//如果mid等于0，那这个元素已经是数组的第一个元素，那它肯定是我们要找的。如果mid不等于0，但a[mid]的前一个元素a[mid-1]不等于value，那也说明a[mid]就是我们要找的第一个值等于给定值的元素。</span></div><div class="line">            <span class="keyword">else</span> high=mid-<span class="number">1</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <ol start="2">
-<li>ConcreteHandler类</li>
+<li>查找最后一个值等于给定值的元素</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//经理</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonManager</span> <span class="keyword">extends</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">CommonManager</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>&&request.getNumber()&lt;=<span class="number">2</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">if</span>(superior!=<span class="keyword">null</span>)</div><div class="line">            {</div><div class="line">                superior.RequestApplications(request);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//总监</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Majordomo</span> <span class="keyword">extends</span> <span class="title">Manager</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">Majordomo</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>&&request.getNumber()&lt;=<span class="number">5</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> {</div><div class="line">            <span class="keyword">if</span>(superior!=<span class="keyword">null</span>)</div><div class="line">            {</div><div class="line">                superior.RequestApplications(request);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">//总经理</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GeneralManager</span> <span class="keyword">extends</span> <span class="title">Manager</span></span>{</div><div class="line">    <span class="keyword">public</span> <span class="title">GeneralManager</span>(String name) {</div><div class="line">        <span class="keyword">super</span>(name);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RequestApplications</span>(Request request) {</div><div class="line">        <span class="keyword">if</span>(request.getRequestType()==<span class="string">"请假"</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (request.getRequestType()==<span class="string">"加薪"</span>&&request.getNumber()&lt;=<span class="number">500</span>){</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"被批准"</span>);</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (request.getRequestType()==<span class="string">"加薪"</span>&&request.getNumber()&gt;<span class="number">500</span>)</div><div class="line">        {</div><div class="line">            System.out.println(name+<span class="string">":"</span>+request.getRequestContent()+<span class="string">"数量："</span>+request.getNumber()+<span class="string">"再说吧"</span>);</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span> (<span class="keyword">int</span>[] a,<span class="keyword">int</span> n,<span class="keyword">int</span> value){</div><div class="line">    <span class="keyword">int</span> low=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> high=n-<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(low&lt;=high){</div><div class="line">        <span class="keyword">int</span> mid =low+((high-low)&gt;&gt;<span class="number">1</span>);</div><div class="line">        <span class="keyword">if</span>(a[mid]&gt;value){</div><div class="line">            high=mid-<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span> <span class="keyword">if</span>(a[mid]&lt;value){</div><div class="line">            low=mid+<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            <span class="keyword">if</span>((mid==n-<span class="number">1</span>)||(a[mid+<span class="number">1</span>]!=value)) <span class="keyword">return</span> mid;</div><div class="line">            <span class="keyword">else</span> low=mid+<span class="number">1</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <ol start="3">
-<li>Request 请求类</li>
+<li>查找第一个大于等于给定值的元素</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span></span></div><div class="line">{</div><div class="line">    <span class="comment">//申请类别</span></div><div class="line">    <span class="keyword">private</span> String requestType;</div><div class="line">    <span class="keyword">public</span> String <span class="title">getRequestType</span>() {</div><div class="line">        <span class="keyword">return</span> requestType;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestType</span>(String requestType) {</div><div class="line">        <span class="keyword">this</span>.requestType = requestType;</div><div class="line">    }</div><div class="line">    <span class="comment">//申请内容</span></div><div class="line">    <span class="keyword">private</span> String requestContent;</div><div class="line">    <span class="keyword">public</span> String <span class="title">getRequestContent</span>() {</div><div class="line">        <span class="keyword">return</span> requestContent;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestContent</span>(String requestContent) {</div><div class="line">        <span class="keyword">this</span>.requestContent = requestContent;</div><div class="line">    }</div><div class="line">    <span class="comment">//数量</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNumber</span>() {</div><div class="line">        <span class="keyword">return</span> number;</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNumber</span>(<span class="keyword">int</span> number) {</div><div class="line">        <span class="keyword">this</span>.number = number;</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span>(<span class="keyword">int</span>[] a,<span class="keyword">int</span> n,<span class="keyword">int</span> value){</div><div class="line">    <span class="keyword">int</span> low=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> high=n-<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(low&lt;=high){</div><div class="line">        <span class="keyword">int</span> mid=low+((high-low)&gt;&gt;<span class="number">1</span>);</div><div class="line">        <span class="keyword">if</span>(a[mid]&gt;=value){</div><div class="line">            <span class="keyword">if</span>((mid==<span class="number">0</span>)||(a[mid-<span class="number">1</span>]&lt;value)) <span class="keyword">return</span> mid;</div><div class="line">            <span class="keyword">else</span> high=mid -<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            low=mid+<span class="number">1</span>;</div><div class="line">        } </div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <ol start="4">
-<li>客户端</li>
+<li>查找最后一个小于等于给定值的元素</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChainofResponsibility</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        CommonManager jinli=<span class="keyword">new</span> CommonManager(<span class="string">"金利"</span>);</div><div class="line">        Majordomo zongjian=<span class="keyword">new</span> Majordomo(<span class="string">"宗剑"</span>);</div><div class="line">        GeneralManager zhongjingli =<span class="keyword">new</span> GeneralManager(<span class="string">"钟精励"</span>);</div><div class="line"></div><div class="line">        jinli.setSuperior(zongjian);</div><div class="line">        zongjian.setSuperior(zhongjingli);</div><div class="line"></div><div class="line">        Request request=<span class="keyword">new</span> Request();</div><div class="line">        request.setRequestType(<span class="string">"请假"</span>);</div><div class="line">        request.setRequestContent(<span class="string">"小菜请假"</span>);</div><div class="line">        request.setNumber(<span class="number">1</span>);</div><div class="line">        jinli.RequestApplications(request);</div><div class="line"></div><div class="line">        Request request2=<span class="keyword">new</span> Request();</div><div class="line">        request2.setRequestType(<span class="string">"请假"</span>);</div><div class="line">        request2.setRequestContent(<span class="string">"小菜请假"</span>);</div><div class="line">        request2.setNumber(<span class="number">4</span>);</div><div class="line">        jinli.RequestApplications(request2);</div><div class="line"></div><div class="line">        Request request3=<span class="keyword">new</span> Request();</div><div class="line">        request3.setRequestType(<span class="string">"加薪"</span>);</div><div class="line">        request3.setRequestContent(<span class="string">"小菜请求加薪"</span>);</div><div class="line">        request3.setNumber(<span class="number">100</span>);</div><div class="line">        jinli.RequestApplications(request3);</div><div class="line"></div><div class="line">        Request request4=<span class="keyword">new</span> Request();</div><div class="line">        request4.setRequestType(<span class="string">"加薪"</span>);</div><div class="line">        request4.setRequestContent(<span class="string">"小菜请求加薪"</span>);</div><div class="line">        request4.setNumber(<span class="number">1000</span>);</div><div class="line">        jinli.RequestApplications(request4);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span>(<span class="keyword">int</span>[] a,<span class="keyword">int</span> n,<span class="keyword">int</span> value){</div><div class="line">    <span class="keyword">int</span> low=<span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> high=n-<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(low&lt;=high){</div><div class="line">        <span class="keyword">int</span> mid=low+((high-low)&gt;&gt;<span class="number">1</span>);</div><div class="line">        <span class="keyword">if</span>(a[mid]&gt;value){</div><div class="line">            high=mid-<span class="number">1</span>;</div><div class="line">        }<span class="keyword">else</span>{</div><div class="line">            <span class="keyword">if</span>((mid==n-<span class="number">1</span>)||(a[mid+<span class="number">1</span>]&gt;value)) <span class="keyword">return</span> mid;</div><div class="line">            <span class="keyword">else</span> low=mid+<span class="number">1</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
 
+<h2 id="如何快速定位IP对应的省份地址？">如何快速定位IP对应的省份地址？</h2>
+<p>有个功能：通过IP地址来查找IP归属地。<br>它是通过维护一个很大的IP地址库来实现的。地址库中包括IP地址范围和归属地的对应关系。<br>比如查询202.102.133.13这个IP地址的归属地，就在地址库里搜索，发现这个IP地址落在了[202.102.133.0,202.102.133.255]这个地址范围内，那我们就可以将这个IP地址范围对应的归属地“山东东营市”显示给用户了。<br>假设我们有12万条这样的IP区间与归属地的对应关系，如何快速定位出一个IP地址的归属地呢？</p>
+<ol>
+<li>如果IP区间与归属地的对应关系不经常更新，我们可以先预处理这12万条数据，让其按照起始IP从小到大排序。IP地址可以转换为32位的整型数。所以，可以将起始地址，按照对应的整型值大小关系，从小到大进行排序。</li>
+<li>这个问题就可以转变为上述第四种：在有序数组中，查找最后一个小于等于某个给定值的元素。</li>
+<li>当我们要查找某个IP归属地时，可以先通过二分查找，找到最后一个起始IP小于等于这个IP的IP区间。然后检查这个IP是否在这个IP区间内，如果在，就取出对应的归属地显示，如果不在，就返回未查找到。</li>
+</ol>
+<h2 id="小小总结">小小总结</h2>
+<ul>
+<li>凡是用二分查找能解决的，绝大部分我们更倾向于用散列表或者二叉查找树。即便是二分查找在内存使用上更节省，但是毕竟内存如此紧缺的情况并不多。</li>
+<li>“值等于给定值”的二分查找确实不怎么会被用到，二分查找更适合用在“近似”查找问题，在这类问题上，二分查找的优势更加明显。比如上面讲的几种变体，用其他数据结构比如散列表、二叉树，就比较难实现了。</li>
+<li>变体二分查找算法写的时候要注意细节，处理不好容易产生bug。容易出错的细节有：终止条件、区间上下界更新方法、返回值选择。</li>
+</ul>
+<h2 id="课后思考-1">课后思考</h2>
+<ol>
+<li>如果有序数组是一个循环有序数组，比如4,5,6,1,2,3。针对这种情况，如何实现一个求“值等于给定值”的二分查找算法呢？<br>有三种方法查找循环有序数组<h3 id="一">一</h3>
+</li>
+<li>找到分界下标，分成两个有序数组</li>
+<li>判断目标值在哪个有序数据范围内，做二分查找<h3 id="二">二</h3>
+</li>
+<li>找到最大值的下标 x;</li>
+<li>所有元素下标 +x 偏移，超过数组范围值的取模;</li>
+<li>利用偏移后的下标做二分查找；</li>
+<li>如果找到目标下标，再作 -x 偏移，就是目标值实际下标。<br>两种情况最高时耗都在查找分界点上，所以时间复杂度是 O(N）。<br>复杂度有点高，能否优化呢？<h3 id="三">三</h3>
+我们发现循环数组存在一个性质：以数组中间点为分区，会将数组分成一个有序数组和一个循环有序数组。<br>如果首元素小于 mid，说明前半部分是有序的，后半部分是循环有序数组；<br>如果首元素大于 mid，说明后半部分是有序的，前半部分是循环有序的数组；<br>如果目标元素在有序数组范围中，使用二分查找；<br>如果目标元素在循环有序数组中，设定数组边界后，使用以上方法继续查找。<br>时间复杂度为 O(logN)。</li>
+</ol>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://yoursite.com">Don</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/09/02/24职责链模式/">http://yoursite.com/2019/09/02/24职责链模式/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/09/02/24职责链模式/">September 2nd 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/09/02/24职责链模式/">September 2nd 2019, 8:38:14 pm</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/12/13/015-016二分查找（上下）/">http://yoursite.com/2019/12/13/015-016二分查找（上下）/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/12/13/015-016二分查找（上下）/">December 13th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/12/13/015-016二分查找（上下）/">December 13th 2019, 4:30:54 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -444,17 +542,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/09/03/25中介者模式/" title= "25中介者模式">
-                    <div class="nextTitle">25中介者模式</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/31/23命令模式/" title= "23命令模式">
-                    <div class="prevTitle">23命令模式</div>
+                <a href= "/2019/12/11/014排序优化/" title= "13排序优化">
+                    <div class="prevTitle">13排序优化</div>
                 </a>
             
         </li>
@@ -566,7 +659,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#职责链模式"><span class="toc-number">1.</span> <span class="toc-text">职责链模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#结构"><span class="toc-number">1.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#好处"><span class="toc-number">1.2.</span> <span class="toc-text">好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">1.3.</span> <span class="toc-text">实现</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二分查找（上）"><span class="toc-number">1.</span> <span class="toc-text">二分查找（上）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#无处不在的二分查找思想"><span class="toc-number">1.1.</span> <span class="toc-text">无处不在的二分查找思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#O(logn)惊人的查找速度"><span class="toc-number">1.2.</span> <span class="toc-text">O(logn)惊人的查找速度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二分查找的递归与非递归实现"><span class="toc-number">1.3.</span> <span class="toc-text">二分查找的递归与非递归实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#循环实现"><span class="toc-number">1.3.1.</span> <span class="toc-text">循环实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#递归实现"><span class="toc-number">1.3.2.</span> <span class="toc-text">递归实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二分查找应用场景的局限性"><span class="toc-number">1.4.</span> <span class="toc-text">二分查找应用场景的局限性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何用最省内存的方式实现快速查找功能？"><span class="toc-number">1.5.</span> <span class="toc-text">如何用最省内存的方式实现快速查找功能？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">1.6.</span> <span class="toc-text">课后思考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二分查找（下）"><span class="toc-number">2.</span> <span class="toc-text">二分查找（下）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见的二分查找表变体问题"><span class="toc-number">2.1.</span> <span class="toc-text">常见的二分查找表变体问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何快速定位IP对应的省份地址？"><span class="toc-number">2.2.</span> <span class="toc-text">如何快速定位IP对应的省份地址？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小小总结"><span class="toc-number">2.3.</span> <span class="toc-text">小小总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考-1"><span class="toc-number">2.4.</span> <span class="toc-text">课后思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一"><span class="toc-number">2.4.1.</span> <span class="toc-text">一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二"><span class="toc-number">2.4.2.</span> <span class="toc-text">二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三"><span class="toc-number">2.4.3.</span> <span class="toc-text">三</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
