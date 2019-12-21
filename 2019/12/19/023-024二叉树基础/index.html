@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Don&#39;s Studio</title>
+    <title>23-24二叉树基础 · Don&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Thrones</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">23-24二叉树基础</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Thrones</a>
 </header>
@@ -220,24 +231,65 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            23-24二叉树基础
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据结构与算法">数据结构与算法</a>
+    
+</div>
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/12/19</span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,304 +390,154 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/26/Java012/" >
-            
-                <span>Java学习-章节12</span>
-        </a>
-        <div class="abstract-content">
-            <p>this关键字–调用属性、调用方法、表示当前对象<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>什么样的二叉树适合用数组来存储？<br>有了如此高效的散列表，为什么还需要二叉树？<br><a id="more"></a> </p>
+<h2 id="树(Tree)">树(Tree)</h2>
+<p>节点的高度=节点到叶子节点的最长路径（边数）<br>节点的深度=根节点到这个节点所经历的边的个数<br>节点的层数=节点的深度+1<br>树的高度=根节点的高度</p>
+<h2 id="二叉树(Binary_Tree)">二叉树(Binary Tree)</h2>
+<ul>
+<li>每个节点最多有两个子节点，分别是左子节点和右子节点。  </li>
+<li>其中，如果叶子节点全都在最底层，除了叶子节点之外，每个节点都有左右两个子节点，这种二叉树就叫做满二叉树。  </li>
+<li>如果叶子节点都在最底下两层，最后一层的叶子节点都靠左排列。并且除了最后一层，其他层的节点个数都要达到最大，这种二叉树叫作完全二叉树。  </li>
+</ul>
+<h2 id="如何表示(或者存储)一棵二叉树？">如何表示(或者存储)一棵二叉树？</h2>
+<p>要想存储一棵二叉树，我们有两种方法，一种是基于指针或者引用的二叉链式存储法，一种是基于数据的顺序存储法。  </p>
+<ol>
+<li>链式存储法<ul>
+<li>每个节点有三个字段，其中一个存储数据，另外两个是指向左右子节点的指针，把整棵树都串起来。这种存储方式我们比较常用。大部分二叉树代码都是通过这种结构来实现的。  </li>
+</ul>
+</li>
+<li>顺序存储法<ul>
+<li>存储在数组中。如果节点 X 存储在数据下标中为 i 的位置，下标为 2 <em> i 的位置存储的就是左子节点，下标为 2 </em> i+1的位置存储的就是右子节点。反过来，下标为 i/2 的位置存储的就是它的父节点。通过这种方式，我们只要知道根节点存储的位置(一般情况下，为了方便计算子节点，根节点会存储在下标为 1 的位置)，这样就可以通过下标计算，把整棵树都串起来。  </li>
+<li>如果某棵二叉树是一棵完全二叉树，那用数组存储五一是最节省内存的一种方式。因为数组的存储方式并不需要像链式存储法那样，要存储额外的左右子节点的指针。这也是为什么完全二叉树会单独拎出来的原因，也是为什么完全二叉树要求最后一层的子节点都靠左的原因。  </li>
+<li>当我们将堆和堆排序的时候，就会发现，堆其实就是一种完全二叉树，最常用的存储方式是数组。  </li>
+</ul>
+</li>
+</ol>
+<h2 id="二叉树的遍历">二叉树的遍历</h2>
+<p>经典的遍历方法有：前序遍历、中序遍历和后序遍历。</p>
+<ul>
+<li>前序遍历是指，对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印它的右子树。  </li>
+<li>中序遍历是指，对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印它的右子树。</li>
+<li>后序遍历是指，对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印它本身。</li>
+</ul>
+<p>实际上，二叉树的前、中、后序遍历就是一个递归的过程。递推公式如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">前序遍历的递推公式</div><div class="line">preOrder<span class="function"><span class="params">(r)</span>=<span class="title">print</span> <span class="title">r</span>-&gt;</span>preOrder<span class="function"><span class="params">(r-&gt;left)</span>-&gt;</span>preOrder(r-&gt;right)</div><div class="line">中序遍历的递推公式</div><div class="line">inOrder<span class="function"><span class="params">(r)</span>=<span class="title">inOrder</span><span class="params">(r-&gt;left)</span>-&gt;</span><span class="built_in">print</span> r-&gt;inOrder(r-right)</div><div class="line">后序遍历的递推公式</div><div class="line">postOrder<span class="function"><span class="params">(r)</span>=<span class="title">postOrder</span><span class="params">(r-&gt;left)</span>-&gt;</span>postOrder<span class="function"><span class="params">(r-&gt;right)</span>-&gt;</span><span class="built_in">print</span> r</div></pre></td></tr></table></figure>
+
+<p>有了递推公式，代码写起来就简单多了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> preOrder(Node* root){</div><div class="line">    <span class="keyword">if</span>(root==<span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">    print root;<span class="comment">//此处为伪代码，表示打印 root 节点</span></div><div class="line">    preOrder(root-&gt;left);</div><div class="line">    preOrder(root-&gt;right);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">void</span> inOrder(Node* root){</div><div class="line">    <span class="keyword">if</span>(root==<span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">    inOrder(root-&gt;left);</div><div class="line">    print root;<span class="comment">//此处为伪代码，表示打印 root 节点</span></div><div class="line">    inOrder(root-&gt;right);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">void</span> postOrder(Node* root){</div><div class="line">    <span class="keyword">if</span>(root==<span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">    post(root-&gt;left);</div><div class="line">    post(root-&gt;right);</div><div class="line">    print root;<span class="comment">//此处为伪代码，表示打印 root 节点</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>二叉树遍历的时间复杂度是 O(n) 。</p>
+<h2 id="课后思考">课后思考</h2>
+<ol>
+<li>给定一组数据，比如1,3,5,6,9,10。你来算算，可以构建出多少种不同的二叉树？<ul>
+<li>是卡特兰数，是C[n,2n] / (n+1)种形状，c是组合数，节点的不同又是一个全排列，一共就是n!*C[n,2n] / (n+1)个二叉树。可以通过数学归纳法推导得出。</li>
+<li>此题既然是数组了，说明是完全二叉树，应该有n的阶乘个组合。</li>
+</ul>
+</li>
+<li>上面讲了三种二叉树的遍历方式，前、中、后序。实际上，还有另一种遍历方式，也就是按层遍历，你知道如何实现吗？<ul>
+<li>层次遍历需要借助队列这样一个辅助数据结构。（其实也可以不用，这样就要自己手动去处理节点的关系，代码不太好理解，好处就是空间复杂度是o(1)。不过用队列比较好理解，缺点就是空间复杂度是o(n)）。</li>
+<li>根节点先入队列，然后队列不空，取出队头元素，如果左孩子存在就入列队，否则什么也不做，右孩子同理。直到队列为空，则表示树层次遍历结束。树的层次遍历，其实也是一个广度优先的遍历算法。</li>
+</ul>
+</li>
+</ol>
+<h2 id="二叉查找树">二叉查找树</h2>
+<p>二叉查找树是二叉树中最常用的一种类型，也叫二叉搜索树。它是为了快速查找而生的。不过，它不仅仅支持快速查找一个数据，还支持快速插入、删除一个数据。<br>二叉查找树要求，在树中任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。下面看如何支持快速查找、插入、删除的操作的。</p>
+<h3 id="二叉查找树的查找操作">二叉查找树的查找操作</h3>
+<p>先取根节点，如果它等于我们要查找的数据，那就返回。如果要查找的数据比根节点的值小，那就在左子树中递归查找。如果要查找的数据比根节点的值大，那就在右子树中递归查找。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinarySearchTree</span></span>{</div><div class="line">    <span class="keyword">private</span> Node tree;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> Node <span class="title">find</span>(<span class="keyword">int</span> data){</div><div class="line">        Node p=tree;</div><div class="line">        <span class="keyword">while</span>(p!=<span class="keyword">null</span>){</div><div class="line">            <span class="keyword">if</span>(data&lt;p.data) p=p.left;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(data&gt;p.data)p=p.right;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">return</span> p;</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>{</div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> data;</div><div class="line">        <span class="keyword">private</span> Node left;</div><div class="line">        <span class="keyword">private</span> Node right;</div><div class="line"></div><div class="line">        <span class="keyword">public</span> <span class="title">Node</span>(<span class="keyword">int</span> data){</div><div class="line">            <span class="keyword">this</span>.data=data;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="二叉查找树中插入操作">二叉查找树中插入操作</h3>
+<ol>
+<li>插入过程与查找过程类似。新插入的数据一般都是在叶子节点上，所以我们只需要从根节点开始，一次比较要插入的数据和节点的大小关系。  </li>
+<li>如果要插入的数据比节点大，并且节点的右子树为空，就将新数据直接插到右子节点的位置。如果不为空，就再递归遍历右子树，查找插入位置。</li>
+<li>同理，如果要插入的数据比节点数值小，并且节点的左子树为空，就将新数据插入到左子节点的位置；如果不为空，就再递归遍历左子树，查找插入位置。  </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span>(<span class="keyword">int</span> data){</div><div class="line">    <span class="keyword">if</span>(tree==<span class="keyword">null</span>){</div><div class="line">        tree = <span class="keyword">new</span> Node(data);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    }</div><div class="line"></div><div class="line">    Node p=tree;</div><div class="line">    <span class="keyword">while</span>(p!=<span class="keyword">null</span>){</div><div class="line">        <span class="keyword">if</span>(data&gt;p.date){</div><div class="line">            <span class="keyword">if</span>(p.right=<span class="keyword">null</span>){</div><div class="line">                p.right=<span class="keyword">new</span> Node(data);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            }</div><div class="line">            p=p.right;</div><div class="line">        }<span class="keyword">else</span>{<span class="comment">//data&lt;p.date</span></div><div class="line">            <span class="keyword">if</span>(p.left==<span class="keyword">null</span>){</div><div class="line">                p.left=<span class="keyword">new</span> Node(data);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            }</div><div class="line">            p=p.left;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="二叉查找树的删除操作">二叉查找树的删除操作</h3>
+<p>二叉查找树的查找、删除操作都比较简单易懂，但是它的删除操作就比较复杂了。针对要删除节点的子节点个数的不同，我们需要分三种情况来处理。</p>
+<ol>
+<li>如果要删除的节点没有子节点，我们只需要直接将父节点中，指向要删除节点的指针置为 null 。  </li>
+<li>如果要删除的节点只有一个子节点(只有左子节点或者右子节点)，我们只需要更新父节点中，指向要删除节点的指针，让它指向要删除节点的子节点就可以了。  </li>
+<li>如果要删除的节点有两个子节点，这就比较复杂了。我们需要找到这个节点右子树中的最小节点，把它替换掉要删除的节点上。然后再删除掉这个最小节点，因为最小节点肯定没有左子节点(如果有左子节点，那就不是最小节点了)，所以，我们应用上面两条规则来删除这个最小节点。 </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span>(<span class="keyword">int</span> data){</div><div class="line">    Node p=tree;<span class="comment">//p指向要删除的节点，初始化指向根节点</span></div><div class="line">    Node pp=<span class="keyword">null</span>; <span class="comment">//pp记录的是p的父节点</span></div><div class="line">    <span class="keyword">while</span> (p!=<span class="keyword">null</span>&&p.data!=data){</div><div class="line">        pp=p;</div><div class="line">        <span class="keyword">if</span>(data&gt;p.data) p=p.right;</div><div class="line">        <span class="keyword">else</span> p=p.left;</div><div class="line">    }</div><div class="line">    <span class="keyword">if</span>(p==<span class="keyword">null</span>) <span class="keyword">return</span>;<span class="comment">//没有找到</span></div><div class="line"></div><div class="line">    <span class="comment">//要删除的节点有两个子节点</span></div><div class="line">    <span class="keyword">if</span>(p.left!=<span class="keyword">null</span>&&p.right!=<span class="keyword">null</span>){</div><div class="line">        <span class="comment">//查找右子树中最小节点</span></div><div class="line">        Node minP=p.right;</div><div class="line">        Node minPP=p;<span class="comment">//minP表示minPP的父节点</span></div><div class="line">        <span class="keyword">while</span>(minP.left!=<span class="keyword">null</span>){</div><div class="line">            minPP=minP;</div><div class="line">            minP=minP.left;</div><div class="line">        }</div><div class="line">        p.data=minP.data;<span class="comment">//将minP的数据替换到p中</span></div><div class="line">        p=minP;<span class="comment">//下面就变成删除minP了</span></div><div class="line">        pp=minPP;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="comment">//删除节点是叶子节点或者仅有一个子节点</span></div><div class="line">    Node child;<span class="comment">//p的子节点</span></div><div class="line">    <span class="keyword">if</span>(p.left!=<span class="keyword">null</span>) child=p.left;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(p.right!=<span class="keyword">null</span>) child=p.right;</div><div class="line">    <span class="keyword">else</span> child=<span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span>(pp==<span class="keyword">null</span>)tree=child;<span class="comment">//删除的是根节点</span></div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(pp.left==p) pp.left=child;</div><div class="line">    <span class="keyword">else</span> pp.right=child;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>实际上，关于二叉查找树的删除操作，还有个非常简单、取巧的方法，就是单纯将要删除的节点标记为“已删除”，但是并不真正从树中将这个节点去掉。这样原本删除的阶段还需要存储在内存中，比较浪费内存空间，但是删除操作就变得简单了很多。而且，这种处理方法也并没有增加插入、查找操作代码实现的难度。  </p>
+<h3 id="二叉查找树的其他操作">二叉查找树的其他操作</h3>
+<p>除了插入、删除、查找操作之外，二叉查找树中还可以支持快速地查找最大节点和最小节点、前驱节点和后继节点。<br>二叉查找树还有一个非常重要的特性，就是中序遍历二叉查找树，可以输出有序的数据序列，时间复杂度是 O(n)，非常高效。因此，二叉查找树也叫二叉排序树。  </p>
+<h2 id="支持重复数据的二叉查找树">支持重复数据的二叉查找树</h2>
+<p>在实际的软件开发汇总，我们在二叉查找树中存储的，是一个包含很多字段的对象。我们利用对象的某个字段作为键值(key)来构建二叉查找树。我们把对象中的其他字段叫作卫星数据。<br>面对重复数据，下面讲两种解决方法。</p>
+<ol>
+<li>二叉查找树中每一个节点不仅会存储一个数据。因此我们通过链表和支持动态扩容的数组等数据结构，把值相同的数据都存储在同一个结点上。这种方法比较容易。</li>
+<li>每个节点只存储一个数据。<ul>
+<li>在查找插入位置的过程中，如果碰到一个节点的值，与要插入数据的值相同，我们将这个要插入的数据放到这个节点的右子树，也就是说，把这个新插入的数据当做大于这个节点的值来处理。</li>
+<li>当要查找数据的时候，遇到值相同的节点，我们并不停止查找操作，而是继续在右子树中查找，直到遇到叶子节点，才停止。这样就可以把键值等于要查找值的所有节点都找出来。</li>
+<li>对于删除操作，我们也需要先查找到每个要删除的节点，然后再按前面讲的删除操作的方法，依次删除。  </li>
+</ul>
+</li>
+</ol>
+<h2 id="二叉查找树的时间复杂度分析">二叉查找树的时间复杂度分析</h2>
+<p>二叉树退化成链表时间复杂度是 O(n) 。<br>不管操作是插入、删除还是查找，时间复杂度其实都跟树的高度成正比，也就是 O(height)。<br>平衡二叉树的高度接近 logn ，所以插入、删除、查找操作的时间复杂度也比较稳定，是 O(logn) 。</p>
+<h2 id="有了如此高效的散列表，为什么还需要二叉树？">有了如此高效的散列表，为什么还需要二叉树？</h2>
+<p>散列表的插入、删除、查找操作时间复杂度可以做到常量级的 O(1) ，非常高效。<br>而二叉查找树在比较平衡的情况下，插入、删除、查找操作的时间复杂度才是 O(logn) ，相对散列表，好像并没有什么优势，那我们为什么还要用二叉查找树呢？有以下几个原因。</p>
+<ol>
+<li>散列表中的数据是无序存储的，如果要输出有序的数据，需要先进行排序。而对于二叉查找树来说，我们只需要中序遍历，就可以在 O(n) 的时间复杂度内，输出有序的数据序列。  </li>
+<li>散列表的扩容耗时很多，而且当需要散列冲突时，性能不稳定，尽管二叉查找树的性能不稳定，但是在工程中，我们最常用的平衡二叉查找树性能非常稳定，时间复杂度稳定在  O(logn)。</li>
+<li>笼统地来说，尽管散列表的查找等操作的时间复杂度是常量级的，但因为哈希冲突的存在，这个常量不一定比 logn 小，所以实际的查找速度可能不一定比 logn 快。加上哈希函数的耗时，也不一定就比平衡二叉查找树的效率高。</li>
+<li>散列表的构造比二叉查找树要复杂，需要考虑的东西很多。比如散列函数的设计、冲突解决办法、扩容、缩容等。平衡二叉查找树只需要考虑平衡性这一个问题，而且这个问题的解决方法比较成熟、固定。</li>
+<li>为了避免过多的散列冲突，散列表装载因子不能太大，特别是基于开放寻址法解决冲突的散列表，不然会浪费一定的存储空间。<br>综合这几点，平衡二叉查找树在某些方面还是优于散列表的，所以，这两者的存在并不冲突。我们在实际的开发过程中，需要结合具体的需求来选择使用哪一个。  </li>
+</ol>
+<h2 id="课后思考-1">课后思考</h2>
+<ol>
+<li>如何通过编程，求出一棵给定二叉树的确切高度呢？<br>确定二叉树高度有两种思路：</li>
+</ol>
+<ul>
+<li>第一种是深度优先思想的递归，分别求左右子树的高度。当前节点的高度就是左右子树中较大的那个+1；即，根节点高度=max(左子树高度，右子树高度)+1</li>
+<li>第二种可以采用层次遍历的方式，每一层记录都记录下当前队列的长度，这个是队尾，每一层队头从0开始。然后每遍历一个元素，队头下标+1。直到队头下标等于队尾下标。这个时候表示当前层遍历完成。每一层刚开始遍历的时候，树的高度+1。最后队列为空，就能得到树的高度。</li>
+</ul>
+
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/26/Java014/" >
-            
-                <span>Java学习-章节14</span>
-        </a>
-        <div class="abstract-content">
-            <p>综合实战–数据表与简单的Java类映射、一对多映射、双向一对多映射、多对多映射<br>
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://yoursite.com">Don</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/12/19/023-024二叉树基础/">http://yoursite.com/2019/12/19/023-024二叉树基础/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/12/19/023-024二叉树基础/">December 19th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/12/19/023-024二叉树基础/">December 21st 2019, 11:41:35 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/26/Java011/" >
-            
-                <span>Java学习-章节11</span>
-        </a>
-        <div class="abstract-content">
-            <p>String类常用方法–字符与字符串、字节与字符串、字符串比较、查找、替换、截取、拆分、其他操作<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/25/Java010/" >
-            
-                <span>Java学习-章节10</span>
-        </a>
-        <div class="abstract-content">
-            <p>String类的特点–String类对象的两种实例化方式、字符串比较、String常量为匿名对象、两种实例化方式的区别、字符串内容不可改变<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/25</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/22/Java009/" >
-            
-                <span>Java学习-章节9</span>
-        </a>
-        <div class="abstract-content">
-            <p>数组的定义与使用–基本概念、二维数组、数组与方法的引用操作、数组相关操作方法、对象数组。<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/22</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/14/Java008/" >
-            
-                <span>Java学习-章节8</span>
-        </a>
-        <div class="abstract-content">
-            <p>深入分析类与对象–封装性、构造方法与匿名对象，综合实战：简单的Java类。<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/14</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/12/Java007/" >
-            
-                <span>Java学习-章节7</span>
-        </a>
-        <div class="abstract-content">
-            <p>类与对象–面向对象简介、认识类与对象，类与对象的定义及使用，对象引用分析<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/12</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/11/Java006/" >
-            
-                <span>Java学习-章节6</span>
-        </a>
-        <div class="abstract-content">
-            <p>方法的定义与使用–基本概念、方法重载、递归调用<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/11/Java004/" >
-            
-                <span>Java学习-章节4</span>
-        </a>
-        <div class="abstract-content">
-            <p>Java运算符–基本运算符，三目运算符，逻辑运算符，位运算符<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/11/Java005/" >
-            
-                <span>Java学习-章节5</span>
-        </a>
-        <div class="abstract-content">
-            <p>Java程序逻辑控制–分支结构、循环结构、循环控制<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-</div>
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/12/17/21-22哈希算法/" title= "21-22哈希算法">
+                    <div class="prevTitle">21-22哈希算法</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/2018/">&#60; PREV</a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2018/page/3/">3</a><a class="extend next" rel="next" href="/archives/2018/page/3/">NEXT &#62;</a>
-    </nav>
     
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -713,6 +615,24 @@
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#树(Tree)"><span class="toc-number">1.</span> <span class="toc-text">树(Tree)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树(Binary_Tree)"><span class="toc-number">2.</span> <span class="toc-text">二叉树(Binary Tree)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何表示(或者存储)一棵二叉树？"><span class="toc-number">3.</span> <span class="toc-text">如何表示(或者存储)一棵二叉树？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树的遍历"><span class="toc-number">4.</span> <span class="toc-text">二叉树的遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">5.</span> <span class="toc-text">课后思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉查找树"><span class="toc-number">6.</span> <span class="toc-text">二叉查找树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉查找树的查找操作"><span class="toc-number">6.1.</span> <span class="toc-text">二叉查找树的查找操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉查找树中插入操作"><span class="toc-number">6.2.</span> <span class="toc-text">二叉查找树中插入操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉查找树的删除操作"><span class="toc-number">6.3.</span> <span class="toc-text">二叉查找树的删除操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉查找树的其他操作"><span class="toc-number">6.4.</span> <span class="toc-text">二叉查找树的其他操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#支持重复数据的二叉查找树"><span class="toc-number">7.</span> <span class="toc-text">支持重复数据的二叉查找树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉查找树的时间复杂度分析"><span class="toc-number">8.</span> <span class="toc-text">二叉查找树的时间复杂度分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有了如此高效的散列表，为什么还需要二叉树？"><span class="toc-number">9.</span> <span class="toc-text">有了如此高效的散列表，为什么还需要二叉树？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考-1"><span class="toc-number">10.</span> <span class="toc-text">课后思考</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -2155,6 +2075,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
