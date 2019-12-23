@@ -447,14 +447,14 @@ height:50vh;
 <h3 id="实现">实现</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bfs</span>(<span class="keyword">int</span> s,<span class="keyword">int</span> t){</div><div class="line">    <span class="comment">//s表示起始顶点，t表示终止顶点。搜索一条s到t的路径。</span></div><div class="line">    <span class="keyword">if</span>(s==t) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">boolean</span>[] visited =<span class="keyword">new</span> <span class="keyword">boolean</span>[v];<span class="comment">//存放已经被访问过的节点</span></div><div class="line">    visited[s]=<span class="keyword">true</span>;</div><div class="line">    Queue&lt;Integer&gt; queue =<span class="keyword">new</span> LinkedList&lt;&gt;();<span class="comment">//存放已经被访问，但相连的顶点还没被访问的顶点</span></div><div class="line">    queue.add(s);</div><div class="line">    <span class="keyword">int</span>[] prev=<span class="keyword">new</span> <span class="keyword">int</span>[v];<span class="comment">//记录搜索路径。比如通过顶点 2 的邻接表访问到顶点 3 ，则 prev[3]=2 。</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;v;++i){</div><div class="line">        prev[i]=-<span class="number">1</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">while</span>(queue.size()!=<span class="number">0</span>){</div><div class="line">        <span class="keyword">int</span> w=queue.poll();</div><div class="line">        <span class="comment">//poll()相当于先get然后再remove掉，就是查看的同时，也将这个元素从容器中删除掉。</span></div><div class="line">        <span class="comment">//poll()和remove()都将移除并且返回对头，但是在poll()在队列为空时返回null，而remove()会抛出NoSuchElementException异常。</span></div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;adj[w].size();++i){</div><div class="line">            <span class="keyword">int</span> q=adj[w].get(i);<span class="comment">//adj[]是邻接表</span></div><div class="line">            <span class="keyword">if</span>(!visited[q]){<span class="comment">//如果没被访问过</span></div><div class="line">                prev[q]=w;</div><div class="line">                <span class="keyword">if</span>(q==t){</div><div class="line">                    print(prev,s,t);</div><div class="line">                    <span class="keyword">return</span>;</div><div class="line">                }</div><div class="line">                visited[q]=<span class="keyword">true</span>;</div><div class="line">                queue.add(q);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">    }</div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">print</span>(<span class="keyword">int</span>[] prev,<span class="keyword">int</span> s,<span class="keyword">int</span> t){</div><div class="line">    <span class="comment">//递归打印s-&gt;t的路径</span></div><div class="line">    <span class="keyword">if</span>(prev[t]!=-<span class="number">1</span>&&t!=s){</div><div class="line">        print(prev,s,prev[t]);</div><div class="line">    }</div><div class="line">    System.out.print(t+<span class="string">' '</span>)</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<h3 id="性能分析">性能分析</h3>
+<h3 id="性能">性能</h3>
 <p>最坏情况下，终止顶点 t 离起始顶点很远，需要遍历完整个图才能找到。这个时候，每个顶点都要进出一遍队列，每个边也都会被访问一次，所以广度优先搜索的时间复杂度是 O(V+E) ,其中 V 表示顶点个数，E 表示边的个数。当然，对于一个连通图来说，也就是说一个图中所有的顶点都是连通的，E 肯定要大于等于 V-1 ，所以，广度优先算法的时间复杂度也可以简写为 O(E) 。<br>广度优先搜索的空间消耗主要在几个辅助变量 visited 数组， queue 队列、prev 数组上。这三个存储空间的大小都不会超过顶点的个数，所以空间复杂度是 O(V) 。</p>
 <h2 id="深度优先搜索(DFS)">深度优先搜索(DFS)</h2>
 <p>深度优先搜搜(Depth-First-Search)，简称 DFS 。<br>深度优先搜索用的是一种比较著名的算法思想，回溯思想。这种思想解决问题的过程，非常适合用递归来实现。后面再专门将回溯思想。  </p>
 <h3 id="实现-1">实现</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">boolean</span> found = flase;<span class="comment">//全局变量或者类成员变量</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dfs</span>(<span class="keyword">int</span> s,<span class="keyword">int</span> t){</div><div class="line">    found=<span class="keyword">false</span>;</div><div class="line">    <span class="keyword">boolean</span>[] visited= <span class="keyword">new</span> <span class="keyword">boolean</span>[v];</div><div class="line">    <span class="keyword">int</span>[] prev=<span class="keyword">new</span> <span class="keyword">int</span>[v];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;v;++i){</div><div class="line">        prev[i]=-<span class="number">1</span>;</div><div class="line">    }</div><div class="line">    recurDfs(s,t,visited,prev);</div><div class="line">    print(prev,s,t);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">recurSDfs</span>(<span class="keyword">int</span> w,<span class="keyword">int</span> t,<span class="keyword">boolean</span> visited,<span class="keyword">int</span>[] prev){</div><div class="line">    <span class="keyword">if</span>(found==<span class="keyword">true</span>) <span class="keyword">return</span>;</div><div class="line">    visited[w]=<span class="keyword">true</span>;</div><div class="line">    <span class="keyword">if</span>(w==t){</div><div class="line">        found=<span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;adj[w].size();++i){</div><div class="line">        <span class="keyword">int</span> q=adj[w].get(i);</div><div class="line">        <span class="keyword">if</span>(!visited[q]){</div><div class="line">            prev[q]=w;</div><div class="line">            recurDfs(q,t,visited,prev);</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<h3 id="性能">性能</h3>
+<h3 id="性能-1">性能</h3>
 <p>每条边最多会被访问两次，一次是遍历，一次是回退。所以，图上的深度优先搜索算法的时间复杂度是 O(E)，E 表示边的个数。<br>深度优先算法的消耗内存主要是 visited、prev 数组和递归调用栈。 visited、prev数组的大小跟顶点的个数 V 成正比，递归调用栈的最大深度不会超过顶点的个数，所以总的空间复杂度就是 O(V) 。</p>
 <h2 id="如何找出社交网络中某个用户的三度好友关系？">如何找出社交网络中某个用户的三度好友关系？</h2>
 <p>社交网络可以用图来表示。这个问题就非常适合用图的广度优先搜索算法来解决，因为广度优先搜索是层层外推进的。<br>首先，遍历与起始顶点最近的一层顶点，也就是用户的一度好友，然后再遍历与用户距离的边数为 2 的顶点，也就是二度好友关系，以及与用户距离的边数为 3 的顶点，也就是三度好友关系。<br>我们只需要稍加改造一下广度优先搜索代码，用一个数组来记录每个顶点与起始顶点的距离，非常容易就可以找出三度好友关系。  </p>
@@ -479,7 +479,7 @@ height:50vh;
             <p>原文作者：<a href="http://yoursite.com">Don</a>
             <p>原文链接：<a href="http://yoursite.com/2019/12/23/030-031图的表示和深度、广度优先算法/">http://yoursite.com/2019/12/23/030-031图的表示和深度、广度优先算法/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/12/23/030-031图的表示和深度、广度优先算法/">December 23rd 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/12/23/030-031图的表示和深度、广度优先算法/">December 23rd 2019, 9:22:00 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/12/23/030-031图的表示和深度、广度优先算法/">December 23rd 2019, 9:26:05 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -604,7 +604,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何理解图？"><span class="toc-number">1.</span> <span class="toc-text">如何理解图？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图的存储"><span class="toc-number">2.</span> <span class="toc-text">图的存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#邻接矩阵"><span class="toc-number">2.1.</span> <span class="toc-text">邻接矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#邻接表存储方法"><span class="toc-number">2.2.</span> <span class="toc-text">邻接表存储方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何存储微博、微信等社交网络中的好友关系？"><span class="toc-number">3.</span> <span class="toc-text">如何存储微博、微信等社交网络中的好友关系？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">4.</span> <span class="toc-text">课后思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是“搜索”算法？"><span class="toc-number">5.</span> <span class="toc-text">什么是“搜索”算法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#广度优先搜索(BFS)"><span class="toc-number">6.</span> <span class="toc-text">广度优先搜索(BFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">6.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能分析"><span class="toc-number">6.2.</span> <span class="toc-text">性能分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深度优先搜索(DFS)"><span class="toc-number">7.</span> <span class="toc-text">深度优先搜索(DFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现-1"><span class="toc-number">7.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能"><span class="toc-number">7.2.</span> <span class="toc-text">性能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何找出社交网络中某个用户的三度好友关系？"><span class="toc-number">8.</span> <span class="toc-text">如何找出社交网络中某个用户的三度好友关系？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考-1"><span class="toc-number">9.</span> <span class="toc-text">课后思考</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#如何理解图？"><span class="toc-number">1.</span> <span class="toc-text">如何理解图？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图的存储"><span class="toc-number">2.</span> <span class="toc-text">图的存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#邻接矩阵"><span class="toc-number">2.1.</span> <span class="toc-text">邻接矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#邻接表存储方法"><span class="toc-number">2.2.</span> <span class="toc-text">邻接表存储方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何存储微博、微信等社交网络中的好友关系？"><span class="toc-number">3.</span> <span class="toc-text">如何存储微博、微信等社交网络中的好友关系？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考"><span class="toc-number">4.</span> <span class="toc-text">课后思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是“搜索”算法？"><span class="toc-number">5.</span> <span class="toc-text">什么是“搜索”算法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#广度优先搜索(BFS)"><span class="toc-number">6.</span> <span class="toc-text">广度优先搜索(BFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-number">6.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能"><span class="toc-number">6.2.</span> <span class="toc-text">性能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深度优先搜索(DFS)"><span class="toc-number">7.</span> <span class="toc-text">深度优先搜索(DFS)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现-1"><span class="toc-number">7.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能-1"><span class="toc-number">7.2.</span> <span class="toc-text">性能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何找出社交网络中某个用户的三度好友关系？"><span class="toc-number">8.</span> <span class="toc-text">如何找出社交网络中某个用户的三度好友关系？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#课后思考-1"><span class="toc-number">9.</span> <span class="toc-text">课后思考</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -617,18 +617,6 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -1653,12 +1641,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/010递归/" >10递归</a>
+            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/009队列/" >09队列</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/009队列/" >09队列</a>
+            <span class="archive-post-date">11/28</span><a class="archive-post-title" href= "/2019/11/28/010递归/" >10递归</a>
         </li>
     
     
@@ -1683,12 +1671,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/25中介者模式/" >25中介者模式</a>
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/26享元模式/" >26享元模式</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/26享元模式/" >26享元模式</a>
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/25中介者模式/" >25中介者模式</a>
         </li>
     
     
@@ -1822,12 +1810,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2018/11/03/Java019/" >Java学习-章节19-23</a>
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2018/11/03/Java17/" >Java学习-章节17-18</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2018/11/03/Java17/" >Java学习-章节17-18</a>
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href= "/2018/11/03/Java019/" >Java学习-章节19-23</a>
         </li>
     
     
@@ -1852,7 +1840,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java014/" >Java学习-章节14</a>
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java013/" >Java学习-章节13</a>
         </li>
     
     
@@ -1867,7 +1855,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java013/" >Java学习-章节13</a>
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/Java014/" >Java学习-章节14</a>
         </li>
     
     
@@ -1897,12 +1885,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java004/" >Java学习-章节4</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java005/" >Java学习-章节5</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java005/" >Java学习-章节5</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/Java004/" >Java学习-章节4</a>
         </li>
     
     
@@ -1939,17 +1927,17 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="设计模式"><span class="iconfont-archer">&#xe606;</span>设计模式</span>
     
-        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
-    
         <span class="sidebar-tag-name" data-tags="Elasticsearch"><span class="iconfont-archer">&#xe606;</span>Elasticsearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
     
         <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
     
         <span class="sidebar-tag-name" data-tags="操作系统"><span class="iconfont-archer">&#xe606;</span>操作系统</span>
     
-        <span class="sidebar-tag-name" data-tags="UCAS"><span class="iconfont-archer">&#xe606;</span>UCAS</span>
-    
         <span class="sidebar-tag-name" data-tags="Python"><span class="iconfont-archer">&#xe606;</span>Python</span>
+    
+        <span class="sidebar-tag-name" data-tags="UCAS"><span class="iconfont-archer">&#xe606;</span>UCAS</span>
     
         <span class="sidebar-tag-name" data-tags="git"><span class="iconfont-archer">&#xe606;</span>git</span>
     
@@ -1994,9 +1982,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="Linux学习"><span class="iconfont-archer">&#xe60a;</span>Linux学习</span>
     
-        <span class="sidebar-category-name" data-categories="教程"><span class="iconfont-archer">&#xe60a;</span>教程</span>
-    
         <span class="sidebar-category-name" data-categories="NLP"><span class="iconfont-archer">&#xe60a;</span>NLP</span>
+    
+        <span class="sidebar-category-name" data-categories="教程"><span class="iconfont-archer">&#xe60a;</span>教程</span>
     
         <span class="sidebar-category-name" data-categories="☎-经验累积"><span class="iconfont-archer">&#xe60a;</span>☎-经验累积</span>
     
